@@ -17,11 +17,11 @@ import java.util.List;
  */
 public class main {
     public static void main(String[] args) {
-        List<Password> pwds = new ArrayList<>();
-        pwds.add(new Password(0, "sdfghjkl"));
-        pwds.add(new Password(1, "ASDSAFafasdasdasdas"));
-        pwds.add(new Password(2, "aaa-aaaa-"));
-        String contents = new JSON().toJson(pwds);
+        List<Password> passwords = new ArrayList<>();
+        passwords.add(new Password(0, "sdfghjkl"));
+        passwords.add(new Password(1, "ASDSAFafasdasdasdas"));
+        passwords.add(new Password(2, "aaa-aaaa-"));
+        String contents = new JSON().toJson(passwords);
         
         CryptoFile.writeFile(new File("test.txt"), "password",  contents);
         
