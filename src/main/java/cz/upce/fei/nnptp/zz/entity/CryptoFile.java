@@ -31,7 +31,7 @@ import javax.crypto.spec.SecretKeySpec;
  * @author Roman
  */
 public class CryptoFile {
-    
+
     public static String readFile(File file, String password) {
         FileInputStream fis = null;
         try {
@@ -41,26 +41,15 @@ public class CryptoFile {
             CipherInputStream cis = new CipherInputStream(fis, c);
             SecretKey secretKey = new SecretKeySpec(password.getBytes(), "DES");
             c.init(Cipher.DECRYPT_MODE, secretKey);
-            
+
             DataInputStream dis = new DataInputStream(cis);
             String r = dis.readUTF();
             dis.close();
             c.doFinal();
-            
-            return r;        
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(CryptoFile.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (NoSuchAlgorithmException ex) {
-            Logger.getLogger(CryptoFile.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (NoSuchPaddingException ex) {
-            Logger.getLogger(CryptoFile.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (InvalidKeyException ex) {
-            Logger.getLogger(CryptoFile.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(CryptoFile.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IllegalBlockSizeException ex) {
-            Logger.getLogger(CryptoFile.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (BadPaddingException ex) {
+
+            return r;
+        } catch (NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeyException |
+                IOException | IllegalBlockSizeException | BadPaddingException ex) {
             Logger.getLogger(CryptoFile.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             try {
@@ -69,10 +58,10 @@ public class CryptoFile {
                 Logger.getLogger(CryptoFile.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        
+
         return null;
     }
-    
+
     public static void  writeFile(File file, String password, String cnt) {
         FileOutputStream fos = null;
         try {
@@ -81,24 +70,13 @@ public class CryptoFile {
             CipherOutputStream cis = new CipherOutputStream(fos, c);
             SecretKey secretKey = new SecretKeySpec(password.getBytes(), "DES");
             c.init(Cipher.ENCRYPT_MODE, secretKey);
-            
+
             DataOutputStream dos = new DataOutputStream(cis);
             dos.writeUTF(cnt);
             dos.close();
             c.doFinal();
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(CryptoFile.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (NoSuchAlgorithmException ex) {
-            Logger.getLogger(CryptoFile.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (NoSuchPaddingException ex) {
-            Logger.getLogger(CryptoFile.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (InvalidKeyException ex) {
-            Logger.getLogger(CryptoFile.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(CryptoFile.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IllegalBlockSizeException ex) {
-            Logger.getLogger(CryptoFile.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (BadPaddingException ex) {
+        } catch (NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeyException |
+                IOException | IllegalBlockSizeException | BadPaddingException ex) {
             Logger.getLogger(CryptoFile.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             try {
@@ -108,5 +86,5 @@ public class CryptoFile {
             }
         }
     }
-    
+
 }
