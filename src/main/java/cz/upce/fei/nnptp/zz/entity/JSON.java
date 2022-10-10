@@ -6,6 +6,7 @@
 package cz.upce.fei.inptp.zz.entity;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -15,22 +16,31 @@ public class JSON {
     
     
     public String toJson(List<Password> passwords)  {
-        // TODO: support all parameters!!!
-        String output = "[";
+        StringBuilder output = new StringBuilder("[");
         for (Password password : passwords) {
-            if (!output.isEmpty() && !output.equals("["))
-                output += ",";
-            output += "{";
-            output += "id:" + password.getId() + ",";
-            output += "password:\"" + password.getPassword()+"\"";
-            
-            output += "}";
+            if ((output.length() > 0) && !output.toString().equals("["))
+                output.append(",");
+            output.append("{");
+            output.append("id:").append(password.getId()).append(",");
+            output.append("password:\"").append(password.getPassword()).append("\",");
+            output.append("parameters: {");
+            if(password.getParameters() != null){
+                for(Map.Entry<String, Parameter> parameter : password.getParameters().entrySet()) {
+                    output.append("\"").append(parameter.getKey()).append("\":");
+                    output
+                        .append("{type: \"").append(parameter.getValue().getClass().getSimpleName())
+                        .append("\", value: \"").append(parameter.getValue().toString())
+                        .append("\"},");
+                }
+            }
+            output.append("}");
+            output.append("}");
         }
-        output += "]";
+        output.append("]");
         
-        return output;
+        return output.toString();
     }
-    
+
     public List<Password> fromJson(String json) {
         throw new RuntimeException("NYI");
     }

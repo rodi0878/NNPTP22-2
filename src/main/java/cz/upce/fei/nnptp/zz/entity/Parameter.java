@@ -11,8 +11,11 @@ import java.time.LocalDateTime;
  *
  * @author Roman
  */
-public class Parameter {
-    
+public abstract class Parameter {
+
+    @Override
+    public abstract String toString();
+
     public static class StandardizedParameters {
         public static final String  TITLE = "title" ;
         public static final String  EXPIRATION_DATETIME  = "expiration-datetime" ;
@@ -40,7 +43,11 @@ public class Parameter {
         public void setValue(String value) {
             this.value = value;
         }
-        
+
+        @Override
+        public String toString() {
+            return getValue();
+        }
     }
     
     public static class DateTimeParameter extends Parameter {
@@ -60,8 +67,12 @@ public class Parameter {
         public void setValue(LocalDateTime value) {
             this.value = value;
         }
-        
-        
+
+
+        @Override
+        public String toString() {
+            return getValue().toString();
+        }
     }
     
     public static class PasswordParameter extends Parameter {
@@ -81,7 +92,9 @@ public class Parameter {
         public void setPassword(String password) {
             this.password = password;
         }
-        
-        
+        @Override
+        public String toString() {
+            return getPassword();
+        }
     }
 }
