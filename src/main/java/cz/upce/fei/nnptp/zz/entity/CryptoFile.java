@@ -74,11 +74,11 @@ public class CryptoFile {
     }
     
     public static void  writeFile(File file, String password, String contents) {
-        FileOutputStream fileInputStream = null;
+        FileOutputStream fileOutputStream = null;
         try {
-            fileInputStream = new FileOutputStream(file);
+            fileOutputStream = new FileOutputStream(file);
             Cipher cipher = Cipher.getInstance("DES/ECB/PKCS5Padding");
-            CipherOutputStream cipherOutputStream = new CipherOutputStream(fileInputStream, cipher);
+            CipherOutputStream cipherOutputStream = new CipherOutputStream(fileOutputStream, cipher);
             SecretKey secretKey = new SecretKeySpec(password.getBytes(), "DES");
             cipher.init(Cipher.ENCRYPT_MODE, secretKey);
             
@@ -102,7 +102,7 @@ public class CryptoFile {
             Logger.getLogger(CryptoFile.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             try {
-                fileInputStream.close();
+                fileOutputStream.close();
             } catch (IOException ex) {
                 Logger.getLogger(CryptoFile.class.getName()).log(Level.SEVERE, null, ex);
             }
