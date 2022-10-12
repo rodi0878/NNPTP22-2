@@ -13,13 +13,9 @@ import java.util.HashMap;
  */
 public class Password {
 
-    private int id;
-    private String password;
-    //private HashMap<ParameterTye, Parameter> parameters;
+    private final int id;
+    private final String password;
     private HashMap<String, Parameter> parameters;
-
-    public Password() {
-    }
 
     public Password(int id, String password) {
         this.id = id;
@@ -44,14 +40,11 @@ public class Password {
         return parameters;
     }
 
-    boolean hasParameter(String TITLE) {
-        return parameters.containsKey(TITLE);
+    boolean hasParameter(String key) {
+        return parameters.containsKey(key);
     }
     
-    public Parameter getParameter(String t) {
-        return parameters.get(t);
+    public Parameter getParameter(String key) {
+        return parameters.get(key);
     }
-    
-    
-
 }
