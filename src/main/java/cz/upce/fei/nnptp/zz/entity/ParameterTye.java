@@ -10,10 +10,10 @@ package cz.upce.fei.nnptp.zz.entity;
  * @author Roman
  */
 public enum ParameterTye {
-    Title,
-    Text,
-    Password,
-    Date
+    TITLE,
+    TEXT,
+    PASSWORD,
+    DATE
     
     
 }
