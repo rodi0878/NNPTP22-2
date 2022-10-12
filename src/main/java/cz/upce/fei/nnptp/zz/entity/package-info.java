@@ -8,4 +8,4 @@
  *
  *
  */
-package cz.upce.fei.inptp.zz.entity;
+package cz.upce.fei.nnptp.zz.entity;
