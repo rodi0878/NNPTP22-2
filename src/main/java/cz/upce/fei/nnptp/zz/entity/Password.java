@@ -40,8 +40,8 @@ public class Password {
         return parameters;
     }
 
-    boolean hasParameter(String key) {
-        return parameters.containsKey(key);
+    boolean hasParameter(String TITLE) {
+        return parameters.containsKey(TITLE);
     }
     
     public Parameter getParameter(String key) {
