@@ -15,11 +15,7 @@ public class Password {
 
     private int id;
     private String password;
-    //private HashMap<ParameterTye, Parameter> parameters;
     private HashMap<String, Parameter> parameters;
-
-    public Password() {
-    }
 
     public Password(int id, String password) {
         this.id = id;
@@ -51,7 +47,4 @@ public class Password {
     public Parameter getParameter(String t) {
         return parameters.get(t);
     }
-    
-    
-
 }
