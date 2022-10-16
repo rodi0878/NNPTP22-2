@@ -33,9 +33,7 @@ import javax.crypto.spec.SecretKeySpec;
 public class CryptoFile {
     
     public static String readFile(File file, String password) {
-        FileInputStream fileInputStream = null;
-        try {
-            fileInputStream = new FileInputStream(file);
+        try(FileInputStream fileInputStream = new FileInputStream(file);) {
             // TODO...
             Cipher cipher = Cipher.getInstance("DES/ECB/PKCS5Padding");
             CipherInputStream cipherInputStream = new CipherInputStream(fileInputStream, cipher);
@@ -62,12 +60,6 @@ public class CryptoFile {
             Logger.getLogger(CryptoFile.class.getName()).log(Level.SEVERE, null, ex);
         } catch (BadPaddingException ex) {
             Logger.getLogger(CryptoFile.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            try {
-                fileInputStream.close();
-            } catch (IOException ex) {
-                Logger.getLogger(CryptoFile.class.getName()).log(Level.SEVERE, null, ex);
-            }
         }
         
         return null;
