@@ -49,8 +49,9 @@ public abstract class Parameter {
             return getValue();
         }
     }
-    
+
     public static class DateTimeParameter extends Parameter {
+
         private LocalDateTime value;
 
         public DateTimeParameter() {
@@ -74,8 +75,9 @@ public abstract class Parameter {
             return getValue().toString();
         }
     }
-    
+
     public static class PasswordParameter extends Parameter {
+
         private String password;
 
         public PasswordParameter() {
@@ -95,6 +97,22 @@ public abstract class Parameter {
         @Override
         public String toString() {
             return getPassword();
+        }
+
+    }
+
+    public static Parameter getParameter(String type, String value) {
+        switch (type) {
+            case StandardizedParameters.TITLE:
+                return new TextParameter(value);
+            case StandardizedParameters.EXPIRATION_DATETIME:
+                return new DateTimeParameter(LocalDateTime.parse(type));
+            case StandardizedParameters.WEBSITE:
+                return new TextParameter(value);
+            case StandardizedParameters.DESCRIPTION:
+                return new TextParameter(value);
+            default:
+                return null;
         }
     }
 }

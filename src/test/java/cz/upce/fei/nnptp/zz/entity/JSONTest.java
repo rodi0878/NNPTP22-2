@@ -1,15 +1,9 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package cz.upce.fei.nnptp.zz.entity;
 
 import org.junit.jupiter.api.*;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -21,19 +15,19 @@ public class JSONTest {
 
     public JSONTest() {
     }
-    
+
     @BeforeAll
     public static void setUpClass() {
     }
-    
+
     @AfterAll
     public static void tearDownClass() {
     }
-    
+
     @BeforeEach
     public void setUp() {
     }
-    
+
     @AfterEach
     public void tearDown() {
     }
@@ -106,5 +100,44 @@ public class JSONTest {
                 "\t}\n" +
                 "]";
         assertEquals(expResult, contents);
+    }
+    public void testFromJson() {
+
+        LinkedList<Password> expectedResult = new LinkedList<>();
+        HashMap<String, Parameter> parameters = new HashMap<>();
+
+        parameters.put(
+                Parameter.StandardizedParameters.TITLE,
+                Parameter.getParameter(Parameter.StandardizedParameters.TITLE, "Bc.")
+        );
+        parameters.put(
+                Parameter.StandardizedParameters.WEBSITE,
+                Parameter.getParameter(Parameter.StandardizedParameters.TITLE, "google.com")
+        );
+
+        Password password1 = new Password(100, "pass", parameters);
+        Password password2 = new Password(101, "pass", parameters);
+
+        expectedResult.add(password1);
+        expectedResult.add(password2);
+
+        String json = "[{\"id\":100,\"password\":\"pass\",\"parameters\":[{\"type\":\"title\",\"value\":\"Bc.\"},{\"type\":\"website\",\"value\":\"google.com\"}]},{\"id\":101,\"password\":\"pass\",\"parameters\":[{\"type\":\"title\",\"value\":\"Bc.\"},{\"type\":\"website\",\"value\":\"google.com\"}]}]";
+        List<Password> actualResult = JSON.fromJson(json);
+
+        String expectedResultString = "";
+        String actualResultString = "";
+
+        for (Password password : expectedResult) {
+            expectedResultString += password.toString();
+        }
+
+        for (Password password : actualResult) {
+            actualResultString += password.toString();
+        }
+
+        System.out.println(expectedResultString);
+        System.out.println(actualResultString);
+
+        assertEquals(expectedResultString, actualResultString);
     }
 }
