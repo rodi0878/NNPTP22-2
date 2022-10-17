@@ -2,6 +2,8 @@ package cz.upce.fei.nnptp.zz.entity;
 
 import org.junit.jupiter.api.*;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -63,15 +65,15 @@ public class JSONTest {
                 "\t\t\"password\" : \"test1\",\n" +
                 "\t\t\"parameters\" : {\n" +
                 "\t\t\t\"key1\" : {\n" +
-                "\t\t\t\t\"type\" : \"TextParameter\",\n" +
+                "\t\t\t\t\"type\" : \"TEXT\",\n" +
                 "\t\t\t\t\"value\" : \"val1\"\n" +
                 "\t\t\t},\n" +
                 "\t\t\t\"key2\" : {\n" +
-                "\t\t\t\t\"type\" : \"PasswordParameter\",\n" +
+                "\t\t\t\t\"type\" : \"PASSWORD\",\n" +
                 "\t\t\t\t\"value\" : \"val2\"\n" +
                 "\t\t\t},\n" +
                 "\t\t\t\"key3\" : {\n" +
-                "\t\t\t\t\"type\" : \"DateTimeParameter\",\n" +
+                "\t\t\t\t\"type\" : \"DATE\",\n" +
                 "\t\t\t\t\"value\" : \"2022-10-17T11:56:36.174509900\"\n" +
                 "\t\t\t}\n" +
                 "\t\t}\n" +
@@ -93,7 +95,7 @@ public class JSONTest {
                 "\t\t\"password\" : \"test4\",\n" +
                 "\t\t\"parameters\" : {\n" +
                 "\t\t\t\"key1\" : {\n" +
-                "\t\t\t\t\"type\" : \"TextParameter\",\n" +
+                "\t\t\t\t\"type\" : \"TEXT\",\n" +
                 "\t\t\t\t\"value\" : \"val1\"\n" +
                 "\t\t\t}\n" +
                 "\t\t}\n" +

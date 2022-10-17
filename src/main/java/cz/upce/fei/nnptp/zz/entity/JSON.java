@@ -27,7 +27,7 @@ public class JSON {
                 Map.Entry<String, Parameter> lastElementParameter = password.getParameters().entrySet().stream().reduce((one, two) -> two).get();
                 for(Map.Entry<String, Parameter> parameter : password.getParameters().entrySet()) {
                     output.append("\t\t\t").append("\"").append(parameter.getKey()).append("\" : {").append("\n");
-                    output.append("\t\t\t\t").append("\"type\" : \"").append(parameter.getValue().getClass().getSimpleName()).append("\",\n");
+                    output.append("\t\t\t\t").append("\"type\" : \"").append(parameter.getValue().getType().toString()).append("\",\n");
                     output.append("\t\t\t\t").append("\"value\" : \"").append(parameter.getValue().toString()).append("\"").append("\n").append("\t\t\t");
                         if(parameter.equals(lastElementParameter))
                         {
@@ -44,9 +44,9 @@ public class JSON {
                 output.append(",");
             output.append("\n");
         }
-        output += "]";
+        output.append("]");
         
-        return output;
+        return output.toString();
     }
 
     public static List<Password> fromJson(String json) {

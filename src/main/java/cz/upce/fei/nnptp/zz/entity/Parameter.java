@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package cz.upce.fei.inptp.zz.entity;
+package cz.upce.fei.nnptp.zz.entity;
 
 import java.time.LocalDateTime;
 
@@ -15,6 +15,8 @@ public abstract class Parameter {
 
     @Override
     public abstract String toString();
+
+    public abstract ParameterType getType();
 
     public static class StandardizedParameters {
         public static final String  TITLE = "title" ;
@@ -48,6 +50,11 @@ public abstract class Parameter {
         public String toString() {
             return getValue();
         }
+
+        @Override
+        public ParameterType getType() {
+            return ParameterType.TEXT;
+        }
     }
 
     public static class DateTimeParameter extends Parameter {
@@ -74,6 +81,11 @@ public abstract class Parameter {
         public String toString() {
             return getValue().toString();
         }
+
+        @Override
+        public ParameterType getType() {
+            return ParameterType.DATE;
+        }
     }
 
     public static class PasswordParameter extends Parameter {
@@ -97,6 +109,11 @@ public abstract class Parameter {
         @Override
         public String toString() {
             return getPassword();
+        }
+
+        @Override
+        public ParameterType getType() {
+            return ParameterType.PASSWORD;
         }
 
     }
