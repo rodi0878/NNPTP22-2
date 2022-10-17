@@ -17,19 +17,20 @@ public class JSON {
 
     public String toJson(List<Password> passwords)  {
         // TODO: support all parameters!!!
-        String output = "[";
+        StringBuilder jsonOutput = new StringBuilder("[");
+
         for (Password password : passwords) {
-            if (!output.isEmpty() && !output.equals("["))
-                output += ",";
-            output += "{";
-            output += "id:" + password.getId() + ",";
-            output += "password:\"" + password.getPassword()+"\"";
-            
-            output += "}";
+            jsonOutput.append("{");
+            jsonOutput.append("id:").append(password.getId()).append(",");
+            jsonOutput.append("password:\"").append(password.getPassword()).append("\"");
+            jsonOutput.append("},");
         }
-        output += "]";
-        
-        return output;
+
+        // Removes the last comma.
+        jsonOutput.deleteCharAt(jsonOutput.length() - 1);
+        jsonOutput.append("]");
+
+        return jsonOutput.toString();
     }
 
     public static List<Password> fromJson(String json) {
