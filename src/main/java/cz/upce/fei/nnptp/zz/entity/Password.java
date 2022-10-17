@@ -16,6 +16,7 @@ public class Password {
     public Password(int id, String password) {
         this.id = id;
         this.password = password;
+        this.parameters = new HashMap<>();
     }
 
     public Password(int id, String password, HashMap<String, Parameter> parameters) {
