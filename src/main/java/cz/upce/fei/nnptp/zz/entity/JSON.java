@@ -20,14 +20,14 @@ public class JSON {
         StringBuilder jsonOutput = new StringBuilder("[");
 
         for (Password password : passwords) {
-            if (!(jsonOutput.length() == 1) && (jsonOutput.charAt(jsonOutput.length() - 1) != '['))
-                jsonOutput.append(',');
             jsonOutput.append("{");
             jsonOutput.append("id:").append(password.getId()).append(",");
             jsonOutput.append("password:\"").append(password.getPassword()).append("\"");
-            jsonOutput.append("}");
+            jsonOutput.append("},");
         }
 
+        // Removes the last comma.
+        jsonOutput.deleteCharAt(jsonOutput.length() - 1);
         jsonOutput.append("]");
 
         return jsonOutput.toString();
