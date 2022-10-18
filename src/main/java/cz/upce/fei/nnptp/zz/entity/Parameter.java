@@ -6,6 +6,7 @@
 package cz.upce.fei.nnptp.zz.entity;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 /**
  *
@@ -15,8 +16,13 @@ public abstract class Parameter {
 
     @Override
     public abstract String toString();
-
+    @Override
+    public abstract boolean equals(Object o);
+    @Override
+    public abstract int hashCode();
     public abstract ParameterType getType();
+
+
 
     public static class StandardizedParameters {
         public static final String  TITLE = "title" ;
@@ -55,6 +61,19 @@ public abstract class Parameter {
         public ParameterType getType() {
             return ParameterType.TEXT;
         }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            TextParameter that = (TextParameter) o;
+            return value.equals(that.value);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(value);
+        }
     }
 
     public static class DateTimeParameter extends Parameter {
@@ -86,6 +105,19 @@ public abstract class Parameter {
         public ParameterType getType() {
             return ParameterType.DATE;
         }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            DateTimeParameter that = (DateTimeParameter) o;
+            return value.equals(that.value);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(value);
+        }
     }
 
     public static class PasswordParameter extends Parameter {
@@ -116,6 +148,18 @@ public abstract class Parameter {
             return ParameterType.PASSWORD;
         }
 
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            PasswordParameter that = (PasswordParameter) o;
+            return password.equals(that.password);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(password);
+        }
     }
 
     public static Parameter getParameter(String type, String value) {

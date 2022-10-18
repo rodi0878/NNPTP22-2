@@ -16,7 +16,7 @@ public class JSON {
     public static final Pattern OBJECT_PATTERN = Pattern.compile("\\\"id\\\":([0-9]*),\\\"password\\\":\\\"(.+?|\\\\\")\\\",\\\"parameters\\\":\\[(.+?|\\\\\")\\]");
     public static final Pattern PARAMETER_PATTERN = Pattern.compile("\\\"type\\\":\\\"(.+?|\\\\\")\\\",\\\"value\\\":\\\"(.+?|\\\\\")\\\"");
 
-    public String toJson(List<Password> passwords)  {
+    public static String toJson(List<Password> passwords)  {
         StringBuilder output = new StringBuilder("[").append("\n");;
         for (Password password : passwords) {
             output.append("\t").append("{").append("\n");

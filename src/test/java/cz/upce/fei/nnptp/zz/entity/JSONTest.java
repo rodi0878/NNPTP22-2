@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
@@ -15,6 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  */
 public class JSONTest {
 
+    List<Password> passwords = new ArrayList<>();
     public JSONTest() {
     }
 
@@ -28,19 +31,6 @@ public class JSONTest {
 
     @BeforeEach
     public void setUp() {
-    }
-
-    @AfterEach
-    public void tearDown() {
-    }
-
-    /**
-     * Test of toJson method, of class JSON.
-     */
-    @Test
-    public void testToJson() {
-        List<Password> passwords = new ArrayList<>();
-
         passwords.add(new Password(0, "test1",
                 new HashMap<>(){
                     {
@@ -49,7 +39,7 @@ public class JSONTest {
                         put("key3", new Parameter.DateTimeParameter(LocalDateTime.parse("2022-10-17T11:56:36.174509900")));
                     }
                 }
-                ));
+        ));
         passwords.add(new Password(1, "test2"));
         passwords.add(new Password(2, "test3", new HashMap<>()));
         passwords.add(new Password(3, "test4", new HashMap<>(){
@@ -57,7 +47,20 @@ public class JSONTest {
                 put("key1", new Parameter.TextParameter("val1"));
             }
         }));
-        String contents = new JSON().toJson(passwords);
+    }
+
+    @AfterEach
+    public void tearDown() {
+        passwords.clear();
+    }
+
+    /**
+     * Test of toJson method, of class JSON.
+     */
+    @Test
+    public void testToJson() {
+
+        String contents = JSON.toJson(passwords);
         System.out.println(contents);
         String expResult = "[\n" +
                 "\t{\n" +
@@ -103,6 +106,7 @@ public class JSONTest {
                 "]";
         assertEquals(expResult, contents);
     }
+    @Test
     public void testFromJson() {
 
         LinkedList<Password> expectedResult = new LinkedList<>();
@@ -141,5 +145,14 @@ public class JSONTest {
         System.out.println(actualResultString);
 
         assertEquals(expectedResultString, actualResultString);
+    }
+
+    /**
+     * Notice! Have to be solved by unified approach for JSON formatting and type handling
+     */
+    @Test
+    public void testBidirectionalJsonConversion() {
+        List<Password> expectedResult = JSON.fromJson(JSON.toJson(passwords));
+        assertArrayEquals(expectedResult.toArray(), passwords.toArray());
     }
 }
