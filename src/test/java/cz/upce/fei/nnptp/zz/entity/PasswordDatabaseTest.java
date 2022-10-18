@@ -36,13 +36,13 @@ public class PasswordDatabaseTest {
     @Test
     void SaveLoadTest() {
         passwordDatabase.add(new Password(0, "sdfghjkl", new HashMap<>(){{
-            put(Parameter.StandardizedParameters.TITLE, new Parameter.TextParameter("firstPassword"));
+            put(Parameter.StandardizedParameter.TITLE, new Parameter.TextParameter("firstPassword"));
         }}));
         passwordDatabase.add(new Password(1, "ASDSAFafasdasdasdas", new HashMap<>(){{
-            put(Parameter.StandardizedParameters.TITLE, new Parameter.TextParameter("secondPassword"));
+            put(Parameter.StandardizedParameter.TITLE, new Parameter.TextParameter("secondPassword"));
         }}));
         passwordDatabase.add(new Password(2, "aaa-aaaa-", new HashMap<>(){{
-            put(Parameter.StandardizedParameters.TITLE, new Parameter.TextParameter("thirdPassword"));
+            put(Parameter.StandardizedParameter.TITLE, new Parameter.TextParameter("thirdPassword"));
         }}));
 
         passwordDatabase.save();

@@ -8,12 +8,31 @@ import java.time.LocalDateTime;
  */
 public class Parameter {
 
-    public static class StandardizedParameters {
+    public enum StandardizedParameter {
+        TITLE("title"),
+        EXPIRATION_DATETIME("expiration-datetime"),
+        WEBSITE("website"),
+        DESCRIPTION("description");
 
-        public static final String TITLE = "title";
-        public static final String EXPIRATION_DATETIME = "expiration-datetime";
-        public static final String WEBSITE = "website";
-        public static final String DESCRIPTION = "description";
+        private final String label;
+
+        private StandardizedParameter(String label) {
+            this.label = label;
+        }
+
+        @Override
+        public String toString() {
+            return this.label;
+        }
+
+        public static StandardizedParameter fromString(String text) {
+            for (StandardizedParameter parameter : StandardizedParameter.values()) {
+                if (parameter.label.equals(text)) {
+                    return parameter;
+                }
+            }
+            return null;
+        }
     }
 
     // TODO: add support for validation rules
@@ -78,14 +97,14 @@ public class Parameter {
 
     }
 
-    public static Parameter getParameter(String type, String value) {
+    public static Parameter getParameter(StandardizedParameter type, String value) {
         switch (type) {
-            case StandardizedParameters.TITLE:
-            case StandardizedParameters.WEBSITE:
-            case StandardizedParameters.DESCRIPTION:
+            case TITLE:
+            case WEBSITE:
+            case DESCRIPTION:
                 return new TextParameter(value);
-            case StandardizedParameters.EXPIRATION_DATETIME:
-                return new DateTimeParameter(LocalDateTime.parse(type));
+            case EXPIRATION_DATETIME:
+                return new DateTimeParameter(LocalDateTime.parse(type.toString()));
             default:
                 return null;
         }

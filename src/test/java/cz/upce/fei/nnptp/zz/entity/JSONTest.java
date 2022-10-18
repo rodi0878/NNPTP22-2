@@ -39,15 +39,15 @@ public class JSONTest {
     public void testFromJson() {
 
         LinkedList<Password> expectedResult = new LinkedList<>();
-        HashMap<String, Parameter> parameters = new HashMap<>();
+        HashMap<Parameter.StandardizedParameter, Parameter> parameters = new HashMap<>();
 
         parameters.put(
-                Parameter.StandardizedParameters.TITLE,
-                Parameter.getParameter(Parameter.StandardizedParameters.TITLE, "Bc.")
+                Parameter.StandardizedParameter.TITLE,
+                Parameter.getParameter(Parameter.StandardizedParameter.TITLE, "Bc.")
         );
         parameters.put(
-                Parameter.StandardizedParameters.WEBSITE,
-                Parameter.getParameter(Parameter.StandardizedParameters.TITLE, "google.com")
+                Parameter.StandardizedParameter.WEBSITE,
+                Parameter.getParameter(Parameter.StandardizedParameter.TITLE, "google.com")
         );
 
         Password password1 = new Password(100, "pass", parameters);

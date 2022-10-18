@@ -42,11 +42,12 @@ public class JSON {
             
             int id = Integer.parseInt(objectMatcher.group(1));
             String password = objectMatcher.group(2);
-            HashMap<String, Parameter> parameters = new HashMap<>();
+            HashMap<Parameter.StandardizedParameter, Parameter> parameters = new HashMap<>();
             Matcher parameterMatcher = PARAMETER_PATTERN.matcher(objectMatcher.group(3));
             
             while(parameterMatcher.find() && parameterMatcher.groupCount() == 2) {
-                String type = parameterMatcher.group(1);
+                String match = parameterMatcher.group(1);
+                Parameter.StandardizedParameter type = Parameter.StandardizedParameter.fromString(match);
                 Parameter parameter = Parameter.getParameter(type, parameterMatcher.group(2));
                 parameters.put(type, parameter);
             }

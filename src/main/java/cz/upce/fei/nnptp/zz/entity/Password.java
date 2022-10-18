@@ -11,7 +11,7 @@ public class Password {
 
     private int id;
     private String password;
-    private HashMap<String, Parameter> parameters;
+    private HashMap<StandardizedParameter, Parameter> parameters;
 
     public Password(int id, String password) {
         this.id = id;
@@ -19,7 +19,7 @@ public class Password {
         this.parameters = new HashMap<>();
     }
 
-    public Password(int id, String password, HashMap<String, Parameter> parameters) {
+    public Password(int id, String password, HashMap<StandardizedParameter, Parameter> parameters) {
         this.id = id;
         this.password = password;
         this.parameters = parameters;
@@ -33,16 +33,16 @@ public class Password {
         return password;
     }
 
-    public HashMap<String, Parameter> getParameters() {
+    public HashMap<StandardizedParameter, Parameter> getParameters() {
         return parameters;
     }
 
-    boolean hasParameter(String TITLE) {
-        return parameters.containsKey(TITLE);
+    boolean hasParameter(StandardizedParameter key) {
+        return parameters.containsKey(key);
     }
 
-    public Parameter getParameter(String t) {
-        return parameters.get(t);
+    public Parameter getParameter(StandardizedParameter key) {
+        return parameters.get(key);
     }
 
     @Override
@@ -51,16 +51,16 @@ public class Password {
         String parametersString = "";
         int parameterIndex = 0;
 
-        for (String type : parameters.keySet()) {
+        for (StandardizedParameter type : parameters.keySet()) {
 
             String value;
             switch (type) {
-                case Parameter.StandardizedParameters.EXPIRATION_DATETIME:
+                case EXPIRATION_DATETIME:
                     value = ((DateTimeParameter) parameters.get(type)).getValue().toString();
                     break;
-                case Parameter.StandardizedParameters.TITLE:
-                case Parameter.StandardizedParameters.WEBSITE:
-                case Parameter.StandardizedParameters.DESCRIPTION:
+                case TITLE:
+                case WEBSITE:
+                case DESCRIPTION:
                     value = ((TextParameter) parameters.get(type)).getValue();
                     break;
                 default:

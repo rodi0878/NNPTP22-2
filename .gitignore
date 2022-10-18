@@ -2,4 +2,5 @@ build/
 target/
 data/
 nbproject/
+.vscode/
 nb-configuration.xml

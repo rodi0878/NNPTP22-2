@@ -39,9 +39,9 @@ public class PasswordDatabase {
     public Password findEntryByTitle(String title) {
         for (Password password : passwords) {
             
-            if (password.hasParameter(Parameter.StandardizedParameters.TITLE)) {
+            if (password.hasParameter(Parameter.StandardizedParameter.TITLE)) {
                 Parameter.TextParameter titleParam;
-                titleParam = (Parameter.TextParameter)password.getParameter(Parameter.StandardizedParameters.TITLE);
+                titleParam = (Parameter.TextParameter)password.getParameter(Parameter.StandardizedParameter.TITLE);
                 if (titleParam.getValue().equals(title)) {
                     return password;
                 }
