@@ -16,6 +16,7 @@ public class Password {
     public Password(int id, String password) {
         this.id = id;
         this.password = password;
+        this.parameters = new HashMap<>();
     }
 
     public Password(int id, String password, HashMap<String, Parameter> parameters) {
@@ -54,15 +55,11 @@ public class Password {
 
             String value;
             switch (type) {
-                case Parameter.StandardizedParameters.TITLE:
-                    value = ((TextParameter) parameters.get(type)).getValue();
-                    break;
                 case Parameter.StandardizedParameters.EXPIRATION_DATETIME:
                     value = ((DateTimeParameter) parameters.get(type)).getValue().toString();
                     break;
+                case Parameter.StandardizedParameters.TITLE:
                 case Parameter.StandardizedParameters.WEBSITE:
-                    value = ((TextParameter) parameters.get(type)).getValue();
-                    break;
                 case Parameter.StandardizedParameters.DESCRIPTION:
                     value = ((TextParameter) parameters.get(type)).getValue();
                     break;
