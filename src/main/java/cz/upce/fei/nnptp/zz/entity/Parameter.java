@@ -165,13 +165,11 @@ public abstract class Parameter {
     public static Parameter getParameter(String type, String value) {
         switch (type) {
             case StandardizedParameters.TITLE:
+            case StandardizedParameters.WEBSITE:
+            case StandardizedParameters.DESCRIPTION:
                 return new TextParameter(value);
             case StandardizedParameters.EXPIRATION_DATETIME:
                 return new DateTimeParameter(LocalDateTime.parse(type));
-            case StandardizedParameters.WEBSITE:
-                return new TextParameter(value);
-            case StandardizedParameters.DESCRIPTION:
-                return new TextParameter(value);
             default:
                 return null;
         }
