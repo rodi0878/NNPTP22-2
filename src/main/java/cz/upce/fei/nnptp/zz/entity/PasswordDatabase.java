@@ -6,6 +6,8 @@
 package cz.upce.fei.nnptp.zz.entity;
 
 import java.io.File;
+import java.security.InvalidAlgorithmParameterException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -21,15 +23,22 @@ public class PasswordDatabase {
     public PasswordDatabase(File file, String password) {
         this.file = file;
         this.password = password;
+        this.passwords = new ArrayList<>();
     }
     
     public void load() {
-        // TODO: use JSON and CryptoFile to load
-        // TODO: throw exceptions when error
+        try {
+            String passwordsInJson = CryptoFile.readFile(file, password);
+            passwords = JSON.fromJson(passwordsInJson);     
+        } catch(Exception ex) {
+            throw ex;
+        }
     }
     
     public void save() {
-        // TODO: use JSON and CryptoFile t save
+        JSON Json = new JSON();
+        String passwordsInJson = Json.toJson(passwords);
+        CryptoFile.writeFile(file, password, passwordsInJson);      
     }
     
     public void add(Password password) {
@@ -37,11 +46,9 @@ public class PasswordDatabase {
     }
     
     public Password findEntryByTitle(String title) {
-        for (Password password : passwords) {
-            
+        for (Password password : passwords) {            
             if (password.hasParameter(Parameter.StandardizedParameters.TITLE)) {
-                Parameter.TextParameter titleParam;
-                titleParam = (Parameter.TextParameter)password.getParameter(Parameter.StandardizedParameters.TITLE);
+                Parameter.TextParameter titleParam = (Parameter.TextParameter) password.getParameter(Parameter.StandardizedParameters.TITLE);
                 if (titleParam.getValue().equals(title)) {
                     return password;
                 }
