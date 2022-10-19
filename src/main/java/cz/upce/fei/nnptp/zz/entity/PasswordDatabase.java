@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package cz.upce.fei.inptp.zz.entity;
+package cz.upce.fei.nnptp.zz.entity;
 
 import java.io.File;
 import java.util.List;
@@ -14,13 +14,13 @@ import java.util.List;
  */
 public class PasswordDatabase {
     private File file;
-    private String passwd;
+    private String password;
     
     private List<Password> passwords;
 
-    public PasswordDatabase(File file, String passwd) {
+    public PasswordDatabase(File file, String password) {
         this.file = file;
-        this.passwd = passwd;
+        this.password = password;
     }
     
     public void load() {
@@ -42,7 +42,7 @@ public class PasswordDatabase {
             if (password.hasParameter(Parameter.StandardizedParameters.TITLE)) {
                 Parameter.TextParameter titleParam;
                 titleParam = (Parameter.TextParameter)password.getParameter(Parameter.StandardizedParameters.TITLE);
-                if (titleParam.getValue().equals(titleParam)) {
+                if (titleParam.getValue().equals(title)) {
                     return password;
                 }
             }

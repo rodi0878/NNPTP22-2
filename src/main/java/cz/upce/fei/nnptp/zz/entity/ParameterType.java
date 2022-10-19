@@ -3,17 +3,17 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package cz.upce.fei.inptp.zz.entity;
+package cz.upce.fei.nnptp.zz.entity;
 
 /**
  *
  * @author Roman
  */
-public enum ParameterTye {
-    Title,
-    Text,
-    Password,
-    Date
-    
+public enum ParameterType {
+    TITLE,
+    TEXT,
+    PASSWORD,
+    DATE
+
     
 }

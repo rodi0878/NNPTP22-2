@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package cz.upce.fei.inptp.zz.entity;
+package cz.upce.fei.nnptp.zz.entity;
 
 import java.io.DataInput;
 import java.io.DataInputStream;
@@ -33,9 +33,7 @@ import javax.crypto.spec.SecretKeySpec;
 public class CryptoFile {
     
     public static String readFile(File file, String password) {
-        FileInputStream fileInputStream = null;
-        try {
-            fileInputStream = new FileInputStream(file);
+        try(FileInputStream fileInputStream = new FileInputStream(file);) {
             // TODO...
             Cipher cipher = Cipher.getInstance("DES/ECB/PKCS5Padding");
             CipherInputStream cipherInputStream = new CipherInputStream(fileInputStream, cipher);
@@ -48,37 +46,18 @@ public class CryptoFile {
             cipher.doFinal();
             
             return result;        
-        } catch (FileNotFoundException ex) {
+        } catch (NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeyException | IOException |
+                IllegalBlockSizeException | BadPaddingException ex) {
             Logger.getLogger(CryptoFile.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (NoSuchAlgorithmException ex) {
-            Logger.getLogger(CryptoFile.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (NoSuchPaddingException ex) {
-            Logger.getLogger(CryptoFile.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (InvalidKeyException ex) {
-            Logger.getLogger(CryptoFile.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(CryptoFile.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IllegalBlockSizeException ex) {
-            Logger.getLogger(CryptoFile.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (BadPaddingException ex) {
-            Logger.getLogger(CryptoFile.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            try {
-                fileInputStream.close();
-            } catch (IOException ex) {
-                Logger.getLogger(CryptoFile.class.getName()).log(Level.SEVERE, null, ex);
-            }
         }
         
         return null;
     }
     
     public static void  writeFile(File file, String password, String contents) {
-        FileOutputStream fileInputStream = null;
-        try {
-            fileInputStream = new FileOutputStream(file);
+        try (FileOutputStream fileOutputStream = new FileOutputStream(file)) {
             Cipher cipher = Cipher.getInstance("DES/ECB/PKCS5Padding");
-            CipherOutputStream cipherOutputStream = new CipherOutputStream(fileInputStream, cipher);
+            CipherOutputStream cipherOutputStream = new CipherOutputStream(fileOutputStream, cipher);
             SecretKey secretKey = new SecretKeySpec(password.getBytes(), "DES");
             cipher.init(Cipher.ENCRYPT_MODE, secretKey);
             
@@ -86,26 +65,9 @@ public class CryptoFile {
             dataOutputStream.writeUTF(contents);
             dataOutputStream.close();
             cipher.doFinal();
-        } catch (FileNotFoundException ex) {
+        } catch (NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeyException | IOException |
+                IllegalBlockSizeException | BadPaddingException ex) {
             Logger.getLogger(CryptoFile.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (NoSuchAlgorithmException ex) {
-            Logger.getLogger(CryptoFile.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (NoSuchPaddingException ex) {
-            Logger.getLogger(CryptoFile.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (InvalidKeyException ex) {
-            Logger.getLogger(CryptoFile.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(CryptoFile.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IllegalBlockSizeException ex) {
-            Logger.getLogger(CryptoFile.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (BadPaddingException ex) {
-            Logger.getLogger(CryptoFile.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            try {
-                fileInputStream.close();
-            } catch (IOException ex) {
-                Logger.getLogger(CryptoFile.class.getName()).log(Level.SEVERE, null, ex);
-            }
         }
     }
     

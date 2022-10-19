@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package cz.upce.fei.inptp.zz.entity;
+package cz.upce.fei.nnptp.zz.entity;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.AfterAll;
@@ -38,11 +38,10 @@ public class PasswordTest {
     }
 
     @Test
-    public void testSomeMethod() {
-        // TODO review the generated test code and remove the default call to fail.
-        Password ppwd = new Password(0, "pass");
+    public void testGetPassword() {
+        Password password = new Password(0, "pass");
         
-        assertTrue(ppwd.getPassword().equals("pass"));
+        assertTrue(password.getPassword().equals("pass"));
     }
     
 }

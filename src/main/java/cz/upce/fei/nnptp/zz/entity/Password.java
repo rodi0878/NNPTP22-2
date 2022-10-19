@@ -1,10 +1,6 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-package cz.upce.fei.inptp.zz.entity;
+package cz.upce.fei.nnptp.zz.entity;
 
+import cz.upce.fei.nnptp.zz.entity.Parameter.*;
 import java.util.HashMap;
 
 /**
@@ -15,15 +11,12 @@ public class Password {
 
     private int id;
     private String password;
-    //private HashMap<ParameterTye, Parameter> parameters;
     private HashMap<String, Parameter> parameters;
-
-    public Password() {
-    }
 
     public Password(int id, String password) {
         this.id = id;
         this.password = password;
+        this.parameters = new HashMap<>();
     }
 
     public Password(int id, String password, HashMap<String, Parameter> parameters) {
@@ -47,11 +40,41 @@ public class Password {
     boolean hasParameter(String TITLE) {
         return parameters.containsKey(TITLE);
     }
-    
+
     public Parameter getParameter(String t) {
         return parameters.get(t);
     }
-    
-    
 
+    @Override
+    public String toString() {
+
+        String parametersString = "";
+        int parameterIndex = 0;
+
+        for (String type : parameters.keySet()) {
+
+            String value;
+            switch (type) {
+                case Parameter.StandardizedParameters.EXPIRATION_DATETIME:
+                    value = ((DateTimeParameter) parameters.get(type)).getValue().toString();
+                    break;
+                case Parameter.StandardizedParameters.TITLE:
+                case Parameter.StandardizedParameters.WEBSITE:
+                case Parameter.StandardizedParameters.DESCRIPTION:
+                    value = ((TextParameter) parameters.get(type)).getValue();
+                    break;
+                default:
+                    return null;
+            }
+
+            parameterIndex++;
+            parametersString += "Parameter{type=" + type + ", value=" + value + "}";
+
+            if (parameterIndex < parameters.size()) {
+                parametersString += ",";
+            }
+        }
+
+        return "Password{" + "id=" + id + ", password=" + password + ", parameters=" + parametersString + '}';
+    }
 }
