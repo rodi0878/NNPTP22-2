@@ -12,27 +12,28 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
+
 /**
  *
  * @author Roman
  */
 public class CryptoFileTest {
-    
+
     public CryptoFileTest() {
     }
-    
+
     @BeforeAll
     public static void setUpClass() {
     }
-    
+
     @AfterAll
     public static void tearDownClass() {
     }
-    
+
     @BeforeEach
     public void setUp() {
     }
-    
+
     @AfterEach
     public void tearDown() {
     }
@@ -42,13 +43,14 @@ public class CryptoFileTest {
      */
     @Test
     public void testReadFile() {
-        System.out.println("readFile");
-        File file = null;
-        String password = "";
-        String expResult = "";
-        String result = ""; //CryptoFile.readFile(file, password);
+
+        File file = new File("./CryptoFileTest.txt");
+        String password = "password";
+        String expResult = "test_string";
+
+        CryptoFile.writeFile(file, password, expResult);
+        String result = CryptoFile.readFile(file, password);
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
     }
 
     /**
@@ -56,12 +58,12 @@ public class CryptoFileTest {
      */
     @Test
     public void testWriteFile() {
-        System.out.println("writeFile");
-        File file = null;
-        String password = "";
-        String cnt = "";
-        //CryptoFile.writeFile(file, password, cnt);
-        // TODO review the generated test code and remove the default call to fail.
+
+        File file = new File("./CryptoFileTest.txt");
+        String password = "password";
+        String content = "test_string";
+
+        CryptoFile.writeFile(file, password, content);
     }
-    
+
 }
