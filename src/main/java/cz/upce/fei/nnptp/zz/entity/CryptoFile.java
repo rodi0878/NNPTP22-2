@@ -36,12 +36,14 @@ public class CryptoFile {
     private static final String ALGORITHM = "AES/CBC/PKCS5Padding";
     private static final Charset CHARSET = StandardCharsets.UTF_8;
     private static final IvParameterSpec INITIALIZATION_VECTOR = new IvParameterSpec(new byte[16]);
+    private static final String KEY_CREATION_ALGORITHM = "PBKDF2WithHmacSHA256";
+    private static final String BASE_ALGORITHM = "AES";
 
     private static SecretKey getKeyFromPassword(String password) throws NoSuchAlgorithmException, InvalidKeySpecException {
 
-        SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256");
+        SecretKeyFactory factory = SecretKeyFactory.getInstance(KEY_CREATION_ALGORITHM);
         KeySpec spec = new PBEKeySpec(password.toCharArray(), password.getBytes(), 65536, 256);
-        return new SecretKeySpec(factory.generateSecret(spec).getEncoded(), "AES");
+        return new SecretKeySpec(factory.generateSecret(spec).getEncoded(), BASE_ALGORITHM);
     }
 
     private static String encrypt(String input, SecretKey key) throws NoSuchPaddingException, NoSuchAlgorithmException, InvalidAlgorithmParameterException, InvalidKeyException, BadPaddingException, IllegalBlockSizeException {
