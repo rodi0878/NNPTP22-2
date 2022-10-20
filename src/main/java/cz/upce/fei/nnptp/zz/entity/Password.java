@@ -62,7 +62,7 @@ public class Password {
     @Override
     public String toString() {
 
-        String parametersString = "";
+        StringBuilder parametersStringBuilder = new StringBuilder();
         int parameterIndex = 0;
 
         for (String type : parameters.keySet()) {
@@ -82,13 +82,14 @@ public class Password {
             }
 
             parameterIndex++;
-            parametersString += "Parameter{type=" + type + ", value=" + value + "}";
+            parametersStringBuilder.append("Parameter{type=").append(type)
+                    .append(", value=").append(value).append("}");
 
             if (parameterIndex < parameters.size()) {
-                parametersString += ",";
+                parametersStringBuilder.append(",");
             }
         }
 
-        return "Password{" + "id=" + id + ", password=" + password + ", parameters=" + parametersString + '}';
+        return "Password{" + "id=" + id + ", password=" + password + ", parameters=" + parametersStringBuilder + '}';
     }
 }
