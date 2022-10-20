@@ -24,8 +24,8 @@ public class JSON {
             output.append("\t\t").append("\"password\" : \"").append(password.getPassword()).append("\",").append("\n");
             output.append("\t\t").append("\"parameters\" : {").append("\n");
             if(password.getParameters() != null && password.getParameters().size() > 0){
-                Map.Entry<String, Parameter> lastElementParameter = password.getParameters().entrySet().stream().reduce((one, two) -> two).get();
-                for(Map.Entry<String, Parameter> parameter : password.getParameters().entrySet()) {
+                Map.Entry<Parameter.StandardizedParameter, Parameter> lastElementParameter = password.getParameters().entrySet().stream().reduce((one, two) -> two).get();
+                for(Map.Entry<Parameter.StandardizedParameter, Parameter> parameter : password.getParameters().entrySet()) {
                     output.append("\t\t\t").append("\"").append(parameter.getKey()).append("\" : {").append("\n");
                     output.append("\t\t\t\t").append("\"type\" : \"").append(parameter.getValue().getType().toString()).append("\",\n");
                     output.append("\t\t\t\t").append("\"value\" : \"").append(parameter.getValue().toString()).append("\"").append("\n").append("\t\t\t");

@@ -34,9 +34,9 @@ public class JSONTest {
         passwords.add(new Password(0, "test1",
                 new HashMap<>(){
                     {
-                        put("key1", new Parameter.TextParameter("val1"));
-                        put("key2", new Parameter.PasswordParameter("val2"));
-                        put("key3", new Parameter.DateTimeParameter(LocalDateTime.parse("2022-10-17T11:56:36.174509900")));
+                        put(Parameter.StandardizedParameter.TITLE, new Parameter.TextParameter("val1"));
+                        put(Parameter.StandardizedParameter.DESCRIPTION, new Parameter.PasswordParameter("val2"));
+                        put(Parameter.StandardizedParameter.EXPIRATION_DATETIME, new Parameter.DateTimeParameter(LocalDateTime.parse("2022-10-17T11:56:36.174509900")));
                     }
                 }
         ));
@@ -44,7 +44,7 @@ public class JSONTest {
         passwords.add(new Password(2, "test3", new HashMap<>()));
         passwords.add(new Password(3, "test4", new HashMap<>(){
             {
-                put("key1", new Parameter.TextParameter("val1"));
+                put(Parameter.StandardizedParameter.TITLE, new Parameter.TextParameter("val1"));
             }
         }));
     }
@@ -67,15 +67,15 @@ public class JSONTest {
                 "\t\t\"id\" : 0,\n" +
                 "\t\t\"password\" : \"test1\",\n" +
                 "\t\t\"parameters\" : {\n" +
-                "\t\t\t\"key1\" : {\n" +
+                "\t\t\t\"title\" : {\n" +
                 "\t\t\t\t\"type\" : \"TEXT\",\n" +
                 "\t\t\t\t\"value\" : \"val1\"\n" +
                 "\t\t\t},\n" +
-                "\t\t\t\"key2\" : {\n" +
+                "\t\t\t\"description\" : {\n" +
                 "\t\t\t\t\"type\" : \"PASSWORD\",\n" +
                 "\t\t\t\t\"value\" : \"val2\"\n" +
                 "\t\t\t},\n" +
-                "\t\t\t\"key3\" : {\n" +
+                "\t\t\t\"expiration-datetime\" : {\n" +
                 "\t\t\t\t\"type\" : \"DATE\",\n" +
                 "\t\t\t\t\"value\" : \"2022-10-17T11:56:36.174509900\"\n" +
                 "\t\t\t}\n" +
@@ -97,7 +97,7 @@ public class JSONTest {
                 "\t\t\"id\" : 3,\n" +
                 "\t\t\"password\" : \"test4\",\n" +
                 "\t\t\"parameters\" : {\n" +
-                "\t\t\t\"key1\" : {\n" +
+                "\t\t\t\"title\" : {\n" +
                 "\t\t\t\t\"type\" : \"TEXT\",\n" +
                 "\t\t\t\t\"value\" : \"val1\"\n" +
                 "\t\t\t}\n" +
