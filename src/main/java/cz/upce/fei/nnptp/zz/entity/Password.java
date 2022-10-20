@@ -2,6 +2,7 @@ package cz.upce.fei.nnptp.zz.entity;
 
 import cz.upce.fei.nnptp.zz.entity.Parameter.*;
 import java.util.HashMap;
+import java.util.Objects;
 
 /**
  *
@@ -43,6 +44,19 @@ public class Password {
 
     public Parameter getParameter(StandardizedParameter key) {
         return parameters.get(key);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Password password1 = (Password) o;
+        return id == password1.id && password.equals(password1.password) && parameters.equals(password1.parameters);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, password, parameters.hashCode());
     }
 
     @Override

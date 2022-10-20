@@ -2,9 +2,13 @@ package cz.upce.fei.nnptp.zz.entity;
 
 import org.junit.jupiter.api.*;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
@@ -13,6 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  */
 public class JSONTest {
 
+    List<Password> passwords = new ArrayList<>();
     public JSONTest() {
     }
 
@@ -26,15 +31,81 @@ public class JSONTest {
 
     @BeforeEach
     public void setUp() {
+        passwords.add(new Password(0, "test1",
+                new HashMap<>(){
+                    {
+                        put("key1", new Parameter.TextParameter("val1"));
+                        put("key2", new Parameter.PasswordParameter("val2"));
+                        put("key3", new Parameter.DateTimeParameter(LocalDateTime.parse("2022-10-17T11:56:36.174509900")));
+                    }
+                }
+        ));
+        passwords.add(new Password(1, "test2"));
+        passwords.add(new Password(2, "test3", new HashMap<>()));
+        passwords.add(new Password(3, "test4", new HashMap<>(){
+            {
+                put("key1", new Parameter.TextParameter("val1"));
+            }
+        }));
     }
 
     @AfterEach
     public void tearDown() {
+        passwords.clear();
     }
 
     /**
      * Test of toJson method, of class JSON.
      */
+    @Test
+    public void testToJson() {
+
+        String contents = JSON.toJson(passwords);
+        System.out.println(contents);
+        String expResult = "[\n" +
+                "\t{\n" +
+                "\t\t\"id\" : 0,\n" +
+                "\t\t\"password\" : \"test1\",\n" +
+                "\t\t\"parameters\" : {\n" +
+                "\t\t\t\"key1\" : {\n" +
+                "\t\t\t\t\"type\" : \"TEXT\",\n" +
+                "\t\t\t\t\"value\" : \"val1\"\n" +
+                "\t\t\t},\n" +
+                "\t\t\t\"key2\" : {\n" +
+                "\t\t\t\t\"type\" : \"PASSWORD\",\n" +
+                "\t\t\t\t\"value\" : \"val2\"\n" +
+                "\t\t\t},\n" +
+                "\t\t\t\"key3\" : {\n" +
+                "\t\t\t\t\"type\" : \"DATE\",\n" +
+                "\t\t\t\t\"value\" : \"2022-10-17T11:56:36.174509900\"\n" +
+                "\t\t\t}\n" +
+                "\t\t}\n" +
+                "\t},\n" +
+                "\t{\n" +
+                "\t\t\"id\" : 1,\n" +
+                "\t\t\"password\" : \"test2\",\n" +
+                "\t\t\"parameters\" : {\n" +
+                "\t\t}\n" +
+                "\t},\n" +
+                "\t{\n" +
+                "\t\t\"id\" : 2,\n" +
+                "\t\t\"password\" : \"test3\",\n" +
+                "\t\t\"parameters\" : {\n" +
+                "\t\t}\n" +
+                "\t},\n" +
+                "\t{\n" +
+                "\t\t\"id\" : 3,\n" +
+                "\t\t\"password\" : \"test4\",\n" +
+                "\t\t\"parameters\" : {\n" +
+                "\t\t\t\"key1\" : {\n" +
+                "\t\t\t\t\"type\" : \"TEXT\",\n" +
+                "\t\t\t\t\"value\" : \"val1\"\n" +
+                "\t\t\t}\n" +
+                "\t\t}\n" +
+                "\t}\n" +
+                "]";
+        assertEquals(expResult, contents);
+    }
     @Test
     public void testFromJson() {
 
@@ -74,5 +145,14 @@ public class JSONTest {
         System.out.println(actualResultString);
 
         assertEquals(expectedResultString, actualResultString);
+    }
+
+    /**
+     * Notice! Have to be solved by unified approach for JSON formatting and type handling
+     */
+    @Test
+    public void testBidirectionalJsonConversion() {
+        List<Password> expectedResult = JSON.fromJson(JSON.toJson(passwords));
+        assertArrayEquals(expectedResult.toArray(), passwords.toArray());
     }
 }

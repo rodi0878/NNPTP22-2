@@ -6,6 +6,7 @@
 package cz.upce.fei.nnptp.zz.entity;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -21,6 +22,7 @@ public class PasswordDatabase {
     public PasswordDatabase(File file, String password) {
         this.file = file;
         this.password = password;
+        this.passwords = new ArrayList<>();
     }
     
     public void load() {
