@@ -5,10 +5,9 @@ import java.util.HashMap;
 import java.util.Objects;
 
 /**
- *
- * @author Roman
- * 
  * Passwords with their respective parameters
+ * 
+ * @author Roman
  */
 public class Password {
 
@@ -16,26 +15,49 @@ public class Password {
     private String password;
     private HashMap<String, Parameter> parameters;
 
+    /**
+     * New Password
+     * @param id
+     * @param password
+     */
     public Password(int id, String password) {
         this.id = id;
         this.password = password;
         this.parameters = new HashMap<>();
     }
 
+    /**
+     * Password with parameters
+     * @param id
+     * @param password
+     * @param parameters
+     */
     public Password(int id, String password, HashMap<String, Parameter> parameters) {
         this.id = id;
         this.password = password;
         this.parameters = parameters;
     }
 
+    /**
+     * 
+     * @return Returns ID of password
+     */
     public int getId() {
         return id;
     }
 
+    /**
+     * Returns password
+     * @return password
+     */
     public String getPassword() {
         return password;
     }
 
+    /**
+     * Returns parameters
+     * @return parameters
+     */
     public HashMap<String, Parameter> getParameters() {
         return parameters;
     }
@@ -44,10 +66,20 @@ public class Password {
         return parameters.containsKey(TITLE);
     }
 
+    /**
+     * Return a specific parameter
+     * @param t
+     * @return
+     */
     public Parameter getParameter(String t) {
         return parameters.get(t);
     }
 
+    /**
+     * Check if passwords are equal
+     * @param o
+     * @return
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -56,11 +88,19 @@ public class Password {
         return id == password1.id && password.equals(password1.password) && parameters.equals(password1.parameters);
     }
 
+    /**
+     * Returns a hash code of a password
+     * @return hash
+     */
     @Override
     public int hashCode() {
         return Objects.hash(id, password, parameters.hashCode());
     }
 
+    /**
+     * Converts parameters to string
+     * @return
+     */
     @Override
     public String toString() {
 

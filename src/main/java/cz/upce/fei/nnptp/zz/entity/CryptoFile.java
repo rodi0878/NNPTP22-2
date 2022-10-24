@@ -29,10 +29,12 @@ import javax.crypto.spec.SecretKeySpec;
 
 /**
  *
- * @author Roman
  * Encrypting and decrypting a password
  * Generating a file with encrypted password
  * Decrypting password from a file
+ * 
+ * @author Roman
+
  */
 public class CryptoFile {
 
@@ -63,6 +65,12 @@ public class CryptoFile {
         return new String(plainText);
     }
 
+    /**
+     * Read a file
+     * @param file
+     * @param password
+     * @return
+     */
     public static String readFile(File file, String password) {
 
         try {
@@ -75,6 +83,12 @@ public class CryptoFile {
         }
     }
 
+    /**
+     * Write into a file
+     * @param file
+     * @param password
+     * @param contents
+     */
     public static void writeFile(File file, String password, String contents) {
 
         try {

@@ -5,9 +5,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *
- * @author Roman
  * A database of passwords for a KeePass like application with functions for loading, saving and searching for combinations
+ * 
+ * @author Roman
+ * 
  */
 public class PasswordDatabase {
     private File file;

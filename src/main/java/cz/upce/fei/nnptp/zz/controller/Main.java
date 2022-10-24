@@ -16,6 +16,12 @@ import java.util.List;
  * 
  */
 public class Main {
+
+    /**
+     * Adding new password into the list
+     * 
+     * @param args
+     */
     public static void main(String[] args) {
         List<Password> pwds = new ArrayList<>();
         pwds.add(new Password(0, "sdfghjkl"));

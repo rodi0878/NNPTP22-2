@@ -8,15 +8,28 @@ import java.util.regex.Pattern;
 import java.util.Map;
 
 /**
- *
- * @author Roman
  * Converting a linked list of passwords to JSON and vice versa
+ * 
+ * @author Roman
+ * 
  */
 public class JSON {
 
+    /**
+     *  How the password will be written into JSON
+     */
     public static final Pattern OBJECT_PATTERN = Pattern.compile("\\\"id\\\":([0-9]*),\\\"password\\\":\\\"(.+?|\\\\\")\\\",\\\"parameters\\\":\\[(.+?|\\\\\")\\]");
+
+    /**
+     * How the parameters of the password will be written into JSON
+     */
     public static final Pattern PARAMETER_PATTERN = Pattern.compile("\\\"type\\\":\\\"(.+?|\\\\\")\\\",\\\"value\\\":\\\"(.+?|\\\\\")\\\"");
 
+    /**
+     * Converts a list of passwords into JSON
+     * @param passwords
+     * @return
+     */
     public static String toJson(List<Password> passwords)  {
         StringBuilder output = new StringBuilder("[").append("\n");
         for (Password password : passwords) {
@@ -50,6 +63,11 @@ public class JSON {
         return output.toString();
     }
 
+    /**
+     * Reading passwords from JSON
+     * @param json
+     * @return Returns a list of passwords from JSON
+     */
     public static List<Password> fromJson(String json) {
 
         List<Password> passwords = new LinkedList<>();

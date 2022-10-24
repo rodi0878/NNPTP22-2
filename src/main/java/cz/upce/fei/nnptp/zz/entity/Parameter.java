@@ -5,11 +5,13 @@ import java.util.Objects;
 
 /**
  *
- * @author Roman
+ * 
  * Specific parameters for saved passwords
  * Title of combination, expiration of password, website and description
  * 
  * Example: "MojeHeslo" "29-4-2023" "zive.cz" "Tajny heslo"
+ * 
+ * @author Roman
  */
 public abstract class Parameter {
 
