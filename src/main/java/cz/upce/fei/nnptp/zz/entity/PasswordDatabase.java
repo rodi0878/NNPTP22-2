@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package cz.upce.fei.nnptp.zz.entity;
 
 import java.io.File;
@@ -12,6 +7,7 @@ import java.util.List;
 /**
  *
  * @author Roman
+ * A database of passwords for a KeePass like application with functions for loading, saving and searching for combinations
  */
 public class PasswordDatabase {
     private File file;

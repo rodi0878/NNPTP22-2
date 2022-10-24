@@ -7,6 +7,8 @@ import java.util.Objects;
 /**
  *
  * @author Roman
+ * 
+ * Passwords with their respective parameters
  */
 public class Password {
 

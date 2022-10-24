@@ -10,6 +10,7 @@ import java.util.Map;
 /**
  *
  * @author Roman
+ * Converting a linked list of passwords to JSON and vice versa
  */
 public class JSON {
 
@@ -17,7 +18,7 @@ public class JSON {
     public static final Pattern PARAMETER_PATTERN = Pattern.compile("\\\"type\\\":\\\"(.+?|\\\\\")\\\",\\\"value\\\":\\\"(.+?|\\\\\")\\\"");
 
     public static String toJson(List<Password> passwords)  {
-        StringBuilder output = new StringBuilder("[").append("\n");;
+        StringBuilder output = new StringBuilder("[").append("\n");
         for (Password password : passwords) {
             output.append("\t").append("{").append("\n");
             output.append("\t\t").append("\"id\" : ").append(password.getId()).append(",").append("\n");

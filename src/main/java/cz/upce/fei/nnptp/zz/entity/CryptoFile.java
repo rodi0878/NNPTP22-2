@@ -30,6 +30,9 @@ import javax.crypto.spec.SecretKeySpec;
 /**
  *
  * @author Roman
+ * Encrypting and decrypting a password
+ * Generating a file with encrypted password
+ * Decrypting password from a file
  */
 public class CryptoFile {
 
