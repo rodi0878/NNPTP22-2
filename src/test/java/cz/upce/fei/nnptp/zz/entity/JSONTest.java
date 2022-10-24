@@ -59,52 +59,28 @@ public class JSONTest {
      */
     @Test
     public void testToJson() {
-
+        List<Password> password = new ArrayList<>();
+        password.add(new Password(0, "sdfghjkl"));
+        password.add(new Password(1, "ASDSAFafasdasdasdas"));
+        password.add(new Password(2, "aaa-aaaa-"));
+        
         String contents = JSON.toJson(passwords);
         System.out.println(contents);
-        String expResult = "[\n" +
-                "\t{\n" +
-                "\t\t\"id\" : 0,\n" +
-                "\t\t\"password\" : \"test1\",\n" +
-                "\t\t\"parameters\" : {\n" +
-                "\t\t\t\"key1\" : {\n" +
-                "\t\t\t\t\"type\" : \"TEXT\",\n" +
-                "\t\t\t\t\"value\" : \"val1\"\n" +
-                "\t\t\t},\n" +
-                "\t\t\t\"key2\" : {\n" +
-                "\t\t\t\t\"type\" : \"PASSWORD\",\n" +
-                "\t\t\t\t\"value\" : \"val2\"\n" +
-                "\t\t\t},\n" +
-                "\t\t\t\"key3\" : {\n" +
-                "\t\t\t\t\"type\" : \"DATE\",\n" +
-                "\t\t\t\t\"value\" : \"2022-10-17T11:56:36.174509900\"\n" +
-                "\t\t\t}\n" +
-                "\t\t}\n" +
-                "\t},\n" +
-                "\t{\n" +
-                "\t\t\"id\" : 1,\n" +
-                "\t\t\"password\" : \"test2\",\n" +
-                "\t\t\"parameters\" : {\n" +
-                "\t\t}\n" +
-                "\t},\n" +
-                "\t{\n" +
-                "\t\t\"id\" : 2,\n" +
-                "\t\t\"password\" : \"test3\",\n" +
-                "\t\t\"parameters\" : {\n" +
-                "\t\t}\n" +
-                "\t},\n" +
-                "\t{\n" +
-                "\t\t\"id\" : 3,\n" +
-                "\t\t\"password\" : \"test4\",\n" +
-                "\t\t\"parameters\" : {\n" +
-                "\t\t\t\"key1\" : {\n" +
-                "\t\t\t\t\"type\" : \"TEXT\",\n" +
-                "\t\t\t\t\"value\" : \"val1\"\n" +
-                "\t\t\t}\n" +
-                "\t\t}\n" +
-                "\t}\n" +
-                "]";
-        assertEquals(expResult, contents);
+        String expResult = 
+    "[{id: 0,\n" +
+        "password: sdfghjkl,\n" +
+        "parameters: {\n" +
+        "}},\n" +
+        "{id: 1,\n" +
+        "password: ASDSAFafasdasdasdas,\n" +
+        "parameters: {\n" +
+        "}},\n" +
+        "{id: 2,\n" +
+        "password: aaa-aaaa-,\n" +
+        "parameters: {\n" +
+    "}}]";
+        
+        assertEquals(expResult, password);
     }
     @Test
     public void testFromJson() {
