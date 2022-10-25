@@ -128,7 +128,7 @@ public class JSONTest {
         expectedResult.add(password2);
 
         String json = "[{\"id\":100,\"password\":\"pass\",\"parameters\":[{\"type\":\"title\",\"value\":\"Bc.\"},{\"type\":\"website\",\"value\":\"google.com\"}]},{\"id\":101,\"password\":\"pass\",\"parameters\":[{\"type\":\"title\",\"value\":\"Bc.\"},{\"type\":\"website\",\"value\":\"google.com\"}]}]";
-        List<Password> actualResult = JSON.fromJson(json);
+        List<Password> actualResult = JSON.fromJsonRegex(json);
 
         String expectedResultString = "";
         String actualResultString = "";
@@ -152,7 +152,7 @@ public class JSONTest {
      */
     @Test
     public void testBidirectionalJsonConversion() {
-        List<Password> expectedResult = JSON.fromJson(JSON.toJson(passwords));
+        List<Password> expectedResult = JSON.fromJsonRegex(JSON.toJson(passwords));
         assertArrayEquals(expectedResult.toArray(), passwords.toArray());
     }
 }
