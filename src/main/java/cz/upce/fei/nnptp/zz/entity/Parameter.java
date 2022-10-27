@@ -9,7 +9,8 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 
 /**
- *
+ * Parameters for saved passwords
+ * Including Title, Expiration date, website, description
  * @author Roman
  */
 public abstract class Parameter {
@@ -37,6 +38,10 @@ public abstract class Parameter {
     public static class TextParameter extends Parameter {
         private String value;
 
+        /**
+         * Sets a text parameter for password
+         * @param value
+         */
         public TextParameter(String value) {
             this.value = value;
         }
@@ -44,6 +49,10 @@ public abstract class Parameter {
         public TextParameter() {
         }
 
+        /**
+         * Returns value
+         * @return
+         */
         public String getValue() {
             return value;
         }
@@ -57,11 +66,20 @@ public abstract class Parameter {
             return getValue();
         }
 
+        /**
+         * Returns a type of the parameter
+         * @return
+         */
         @Override
         public ParameterType getType() {
             return ParameterType.TEXT;
         }
 
+        /**
+         * Checks if the parameters equal
+         * @param o
+         * @return
+         */
         @Override
         public boolean equals(Object o) {
             if (this == o) return true;
@@ -70,6 +88,10 @@ public abstract class Parameter {
             return value.equals(that.value);
         }
 
+        /**
+         * Hashing
+         * @return
+         */
         @Override
         public int hashCode() {
             return Objects.hash(value);

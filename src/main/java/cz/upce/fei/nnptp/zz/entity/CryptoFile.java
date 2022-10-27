@@ -28,7 +28,7 @@ import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.SecretKeySpec;
 
 /**
- *
+ * Reading/Writing passwords from/in files
  * @author Roman
  */
 public class CryptoFile {
@@ -62,6 +62,12 @@ public class CryptoFile {
         return new String(plainText);
     }
 
+    /**
+     * Reading a file with stored passwords
+     * @param file
+     * @param password
+     * @return null
+     */
     public static String readFile(File file, String password) {
 
         try {
@@ -74,6 +80,12 @@ public class CryptoFile {
         }
     }
 
+    /**
+     * Writing passwords into a file
+     * @param file
+     * @param password
+     * @param contents
+     */
     public static void writeFile(File file, String password, String contents) {
 
         try {
