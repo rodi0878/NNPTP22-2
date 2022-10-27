@@ -21,20 +21,20 @@ public class JSON {
         
         for (Password password : passwords) {
           if (!json.toString().equals("[")) {
-                json.append(",\n");
+                json.append(",");
             }
           
-            json.append("{");
-            json.append("id: ").append(password.getId()).append(",\n");
-            json.append("password: ").append(password.getPassword()).append(",\n");
-            json.append("parameters: {\n");
+            json.append("{\"id\": ");
+            json.append(password.getId());
+            json.append(",\"password\": \"").append(password.getPassword());
+            json.append("\",\"parameters\": {");
             
             if (password.getParameters() != null) {
                 for (Map.Entry<String, Parameter> parameter : password.getParameters().entrySet()) {
                     json.append(parameter.getKey());
                     json.append(": ");
                     json.append(parameter.getValue());
-                    json.append(",\n");
+                    
                 }
             }
             json.append("}}");
