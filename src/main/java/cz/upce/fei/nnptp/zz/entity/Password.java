@@ -10,9 +10,9 @@ import java.util.Objects;
  */
 public class Password {
 
-    private int id;
-    private String password;
-    private HashMap<String, Parameter> parameters;
+    private final int id;
+    private final String password;
+    private final HashMap<String, Parameter> parameters;
 
     public Password(int id, String password) {
         this.id = id;
