@@ -9,11 +9,17 @@ public class PasswordGenerator {
     private static final String digits = "0123456789";
     private static final String allowedSpecialCharacters = "+?!<>*_#@%";
 
+    private static final int defaultPasswordLength = 5;
+
     public PasswordGenerator() {
     }
 
     public String generatePassword(int passwordLength, boolean canIncludeCapitalLetters, boolean canIncludeNumbers, boolean canIncludeSpecialCharacters) {
         String outputPassword;
+        if (passwordLength <= 0){
+            System.out.println("Invalid password length, using default length");
+            passwordLength = defaultPasswordLength;
+        }
         if (!canIncludeSpecialCharacters) {
             outputPassword = RandomStringUtils.random(passwordLength, true, canIncludeNumbers);
             if (!canIncludeCapitalLetters) {
