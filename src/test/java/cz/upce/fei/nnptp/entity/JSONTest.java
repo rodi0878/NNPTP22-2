@@ -1,4 +1,4 @@
-package cz.upce.fei.nnptp.zz.entity;
+package cz.upce.fei.nnptp.entity;
 
 import org.junit.jupiter.api.*;
 
