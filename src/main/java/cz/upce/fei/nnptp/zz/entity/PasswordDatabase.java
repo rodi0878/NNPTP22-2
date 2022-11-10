@@ -26,12 +26,18 @@ public class PasswordDatabase {
     }
     
     public void load() {
-        // TODO: use JSON and CryptoFile to load
-        // TODO: throw exceptions when error
+        try {
+            String passwordInJSON = CryptoFile.readFile(file, password);
+            System.out.println(passwordInJSON);
+            passwords = new JSON().fromJson(passwordInJSON);
+        }catch (Exception e){
+            throw new RuntimeException(e.getMessage());
+        }
     }
     
     public void save() {
-        // TODO: use JSON and CryptoFile t save
+        String passwordsContext = new JSON().toJson(passwords);
+        CryptoFile.writeFile(file, password, passwordsContext);
     }
     
     public void add(Password password) {
