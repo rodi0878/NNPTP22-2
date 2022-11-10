@@ -1,6 +1,6 @@
-package cz.upce.fei.nnptp.zz.entity;
+package cz.upce.fei.nnptp.entity;
 
-import cz.upce.fei.nnptp.zz.entity.Parameter.*;
+import cz.upce.fei.nnptp.entity.Parameter.*;
 import java.util.HashMap;
 import java.util.Objects;
 
