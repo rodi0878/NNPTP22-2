@@ -64,23 +64,11 @@ public class JSONTest {
         password.add(new Password(1, "ASDSAFafasdasdasdas"));
         password.add(new Password(2, "aaa-aaaa-"));
         
-        String contents = JSON.toJson(passwords);
+        String contents = JSON.toJson(password);
         System.out.println(contents);
-        String expResult = 
-    "[{id: 0,\n" +
-        "password: sdfghjkl,\n" +
-        "parameters: {\n" +
-        "}},\n" +
-        "{id: 1,\n" +
-        "password: ASDSAFafasdasdasdas,\n" +
-        "parameters: {\n" +
-        "}},\n" +
-        "{id: 2,\n" +
-        "password: aaa-aaaa-,\n" +
-        "parameters: {\n" +
-    "}}]";
+        String expResult = "[{\"id\": 0,\"password\": \"sdfghjkl\",\"parameters\": {}},{\"id\": 1,\"password\": \"ASDSAFafasdasdasdas\",\"parameters\": {}},{\"id\": 2,\"password\": \"aaa-aaaa-\",\"parameters\": {}}]";
         
-        assertEquals(expResult, password);
+        assertEquals(expResult, contents);
     }
     @Test
     public void testFromJson() {
