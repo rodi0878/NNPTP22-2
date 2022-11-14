@@ -12,6 +12,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 import java.util.HashMap;
+import java.util.Objects;
 
 /**
  *
@@ -117,7 +118,7 @@ public class PasswordTest {
 
     @Test
     public void testHashCode() {
-        int expectedCode = 599197349;
+        int expectedCode = Objects.hash(password.getId(), password.getPassword(), password.getParameters().hashCode());
         assertTrue(password.hashCode() == expectedCode);
     }
 
