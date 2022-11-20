@@ -1,7 +1,7 @@
-package cz.upce.fei.nnptp.zz.entity;
+package cz.upce.fei.nnptp.entity;
 
-import cz.upce.fei.nnptp.zz.entity.Parameter.*;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -38,12 +38,12 @@ public class Password {
         return parameters;
     }
 
-    boolean hasParameter(String TITLE) {
-        return parameters.containsKey(TITLE);
+    boolean hasParameter(String parameterName) {
+        return parameters.containsKey(parameterName);
     }
 
-    public Parameter getParameter(String t) {
-        return parameters.get(t);
+    public Parameter getParameter(String parameterName) {
+        return parameters.get(parameterName);
     }
 
     @Override
@@ -61,34 +61,15 @@ public class Password {
 
     @Override
     public String toString() {
-
         String parametersString = "";
         int parameterIndex = 0;
-
-        for (String type : parameters.keySet()) {
-
-            String value;
-            switch (type) {
-                case Parameter.StandardizedParameters.EXPIRATION_DATETIME:
-                    value = ((DateTimeParameter) parameters.get(type)).getValue().toString();
-                    break;
-                case Parameter.StandardizedParameters.TITLE:
-                case Parameter.StandardizedParameters.WEBSITE:
-                case Parameter.StandardizedParameters.DESCRIPTION:
-                    value = ((TextParameter) parameters.get(type)).getValue();
-                    break;
-                default:
-                    return null;
-            }
-
+        for (Map.Entry<String, Parameter> set : parameters.entrySet()) {
             parameterIndex++;
-            parametersString += "Parameter{type=" + type + ", value=" + value + "}";
-
+            parametersString += "Parameter{key=" + set.getKey() + ", value=" + set.getValue() + ", type=" + set.getValue().getType() + "}";
             if (parameterIndex < parameters.size()) {
                 parametersString += ",";
             }
         }
-
         return "Password{" + "id=" + id + ", password=" + password + ", parameters=" + parametersString + '}';
     }
 }
