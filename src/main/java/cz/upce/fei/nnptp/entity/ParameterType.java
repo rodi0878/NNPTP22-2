@@ -3,7 +3,17 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+package cz.upce.fei.nnptp.entity;
+
 /**
- * There should be controllers/logic for basic entity classes.
+ * Types of parameters
+ * @author Roman
  */
-package cz.upce.fei.nnptp.zz.controller;
+public enum ParameterType {
+    TITLE,
+    TEXT,
+    PASSWORD,
+    DATE
+
+    
+}

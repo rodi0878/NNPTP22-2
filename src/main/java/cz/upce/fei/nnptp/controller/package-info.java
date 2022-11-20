@@ -4,8 +4,6 @@
  * and open the template in the editor.
  */
 /**
- * This package should contain entity classes. Controllers, models and other logic shouldn't be handled there.
- *
- *
+ * There should be controllers/logic for basic entity classes.
  */
-package cz.upce.fei.nnptp.zz.entity;
+package cz.upce.fei.nnptp.controller;

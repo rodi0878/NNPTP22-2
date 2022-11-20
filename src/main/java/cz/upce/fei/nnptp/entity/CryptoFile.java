@@ -1,4 +1,4 @@
-package cz.upce.fei.nnptp.zz.entity;
+package cz.upce.fei.nnptp.entity;
 
 import java.io.File;
 import java.io.IOException;

@@ -1,8 +1,8 @@
-package cz.upce.fei.nnptp.zz.controller;
+package cz.upce.fei.nnptp.controller;
 
-import cz.upce.fei.nnptp.zz.entity.CryptoFile;
-import cz.upce.fei.nnptp.zz.entity.JSON;
-import cz.upce.fei.nnptp.zz.entity.Password;
+import cz.upce.fei.nnptp.entity.CryptoFile;
+import cz.upce.fei.nnptp.entity.JSON;
+import cz.upce.fei.nnptp.entity.Password;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
