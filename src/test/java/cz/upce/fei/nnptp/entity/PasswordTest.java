@@ -124,7 +124,7 @@ public class PasswordTest {
 
     @Test
     public void testToString() {
-        String expectedString = "Password{id=1, password=heslo1234, parameters=Parameter{key=parameter2, value=value2},Parameter{key=parameter1, value=value1}}";
+        String expectedString = "Password{id=1, password=heslo1234, parameters=Parameter{key=parameter2, value=value2, type=TEXT},Parameter{key=parameter1, value=value1, type=TEXT}}";
         assertTrue(password.toString().equals(expectedString));
     }
 }
