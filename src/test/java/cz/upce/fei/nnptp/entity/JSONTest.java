@@ -8,7 +8,6 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
@@ -31,6 +30,8 @@ public class JSONTest {
 
     @BeforeEach
     public void setUp() {
+
+        passwords.clear();
         passwords.add(new Password(0, "test1",
                 new HashMap<>(){
                     {
@@ -61,6 +62,7 @@ public class JSONTest {
     @Test
     public void testToJson() {
 
+        setUp();
         String contents = JSON.toJson(passwords);
         System.out.println(contents);
         String expResult = "[" +
