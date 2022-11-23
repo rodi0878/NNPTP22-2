@@ -64,54 +64,26 @@ public class JSON {
      */
     public static List<Password> fromJson(String json) {
         List<Password> passwords = new LinkedList<>();
-        JSONArray array = new JSONArray(json);
-
-        for (int i = 0; i < array.length(); i++) {
-
+        JSONArray array = new JSONArray(json);  
+        
+        for(int i = 0; i < array.length(); i++ ){
             HashMap<String, Parameter> parameters = new HashMap<>();
+            
             JSONObject PwdObject = array.getJSONObject(i);
-            JSONObject pwdObjectList;
-            String value = "";
-            String type = "";
-            String password = "";
-            int id = 0;
-            if (PwdObject.get("parameters") instanceof JSONArray) {
-                for (int j = 0; j < array.length(); j++) {
-                    JSONArray paramArray = (JSONArray) PwdObject.get("parameters");
-                    pwdObjectList = parseArrayIntoList(paramArray, j);
-                    value = (String) pwdObjectList.get("value");
-                    type = (String) pwdObjectList.get("type");
-                    id = (int) PwdObject.get("id");
-                    password = (String) PwdObject.get("password");
-                    Parameter parameter = Parameter.getParameter(type, value);
-                    parameters.put(type, parameter);
-                }
-            }
-            if (PwdObject.get("parameters") instanceof JSONObject) {
-                parameters = new HashMap<>();
-                pwdObjectList = (JSONObject) PwdObject.get("parameters");
-                type = pwdObjectList.keys().next();
-                JSONObject title = (JSONObject) pwdObjectList.get(type);
-                value = (String) title.get("value");
-                id = (int) PwdObject.get("id");
-                password = (String) PwdObject.get("password");
-                Parameter parameter = Parameter.getParameter(type, value);
-                parameters.put(type, parameter);
-            }
-
+            JSONObject params = (JSONObject) PwdObject.get("parameters");
+            String type = params.keys().next();
+            JSONObject title = (JSONObject) params.get(type);
+            String value = (String) title.get("value");
+            
+            int id = (int) PwdObject.get("id");
+            String password = (String) PwdObject.get("password");
+            Parameter parameter = Parameter.getParameter(type, value);
+            
+            parameters.put(type, parameter);
             passwords.add(new Password(id, password, parameters));
-
         }
-
+        
         return passwords;
-
-    }
-
-    private static JSONObject parseArrayIntoList(JSONArray array, Integer i) {
-        if (!(array.getJSONObject(i) instanceof JSONObject)) {
-            return new JSONObject();
-        }
-
-        return array.getJSONObject(i);
+    
     }
 }
