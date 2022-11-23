@@ -17,36 +17,30 @@ public class JSON {
     public static final Pattern PARAMETER_PATTERN = Pattern.compile("\\\"type\\\":\\\"(.+?|\\\\\")\\\",\\\"value\\\":\\\"(.+?|\\\\\")\\\"");
 
     public static String toJson(List<Password> passwords)  {
-        StringBuilder output = new StringBuilder("[").append("\n");;
+        StringBuilder json = new StringBuilder("[");
+        
         for (Password password : passwords) {
-            output.append("\t").append("{").append("\n");
-            output.append("\t\t").append("\"id\" : ").append(password.getId()).append(",").append("\n");
-            output.append("\t\t").append("\"password\" : \"").append(password.getPassword()).append("\",").append("\n");
-            output.append("\t\t").append("\"parameters\" : {").append("\n");
-            if(password.getParameters() != null && password.getParameters().size() > 0){
-                Map.Entry<String, Parameter> lastElementParameter = password.getParameters().entrySet().stream().reduce((one, two) -> two).get();
-                for(Map.Entry<String, Parameter> parameter : password.getParameters().entrySet()) {
-                    output.append("\t\t\t").append("\"").append(parameter.getKey()).append("\" : {").append("\n");
-                    output.append("\t\t\t\t").append("\"type\" : \"").append(parameter.getValue().getType().toString()).append("\",\n");
-                    output.append("\t\t\t\t").append("\"value\" : \"").append(parameter.getValue().toString()).append("\"").append("\n").append("\t\t\t");
-                        if(parameter.equals(lastElementParameter))
-                        {
-                            output.append("}");
-                        } else {
-                            output.append("},");
-                        }
-                        output.append("\n");
+          if (!json.toString().equals("[")) {
+                json.append(",");
+            }
+          
+            json.append("{\"id\": ");
+            json.append(password.getId());
+            json.append(",\"password\": \"").append(password.getPassword());
+            json.append("\",\"parameters\": {");
+            
+            if (password.getParameters() != null) {
+                for (Map.Entry<String, Parameter> parameter : password.getParameters().entrySet()) {
+                    json.append(parameter.getKey());
+                    json.append(": ");
+                    json.append(parameter.getValue());
+                    
                 }
             }
-            output.append("\t\t").append("}").append("\n");
-            output.append("\t").append("}");
-            if(!password.equals(passwords.get(passwords.size()-1)))
-                output.append(",");
-            output.append("\n");
+            json.append("}}");
         }
-        output.append("]");
-        
-        return output.toString();
+        json.append("]");
+        return json.toString();
     }
 
     public static List<Password> fromJson(String json) {
