@@ -3,9 +3,11 @@ package cz.upce.fei.nnptp.entity;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.Map;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 /**
  *
@@ -61,25 +63,27 @@ public class JSON {
      * @return Returns a list of passwords
      */
     public static List<Password> fromJson(String json) {
-
         List<Password> passwords = new LinkedList<>();
-        Matcher objectMatcher = OBJECT_PATTERN.matcher(json);
-
-        while(objectMatcher.find() && objectMatcher.groupCount() == 3) {
-
-            int id = Integer.parseInt(objectMatcher.group(1));
-            String password = objectMatcher.group(2);
+        JSONArray array = new JSONArray(json);  
+        
+        for(int i = 0; i < array.length(); i++ ){
             HashMap<String, Parameter> parameters = new HashMap<>();
-            Matcher parameterMatcher = PARAMETER_PATTERN.matcher(objectMatcher.group(3));
-
-            while(parameterMatcher.find() && parameterMatcher.groupCount() == 2) {
-                String type = parameterMatcher.group(1);
-                Parameter parameter = Parameter.getParameter(type, parameterMatcher.group(2));
-                parameters.put(type, parameter);
-            }
-
+            
+            JSONObject PwdObject = array.getJSONObject(i);
+            JSONObject params = (JSONObject) PwdObject.get("parameters");
+            String type = params.keys().next();
+            JSONObject title = (JSONObject) params.get(type);
+            String value = (String) title.get("value");
+            
+            int id = (int) PwdObject.get("id");
+            String password = (String) PwdObject.get("password");
+            Parameter parameter = Parameter.getParameter(type, value);
+            
+            parameters.put(type, parameter);
             passwords.add(new Password(id, password, parameters));
         }
+        
         return passwords;
+    
     }
 }
