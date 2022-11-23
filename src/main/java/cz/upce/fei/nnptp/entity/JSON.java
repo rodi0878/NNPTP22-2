@@ -13,9 +13,21 @@ import java.util.Map;
  */
 public class JSON {
 
+    /**
+     * Pattern of the password to be written into JSON
+     */
     public static final Pattern OBJECT_PATTERN = Pattern.compile("\\\"id\\\":([0-9]*),\\\"password\\\":\\\"(.+?|\\\\\")\\\",\\\"parameters\\\":\\[(.+?|\\\\\")\\]");
+
+    /**
+     * Patterns of the password parameters to be writton into JSON
+     */
     public static final Pattern PARAMETER_PATTERN = Pattern.compile("\\\"type\\\":\\\"(.+?|\\\\\")\\\",\\\"value\\\":\\\"(.+?|\\\\\")\\\"");
 
+    /**
+     * Builds a string with password and its parameters so it can be written into JSON
+     * @param passwords
+     * @return string
+     */
     public static String toJson(List<Password> passwords)  {
         StringBuilder json = new StringBuilder("[");
         
@@ -43,6 +55,11 @@ public class JSON {
         return json.toString();
     }
 
+    /**
+     * Reads passwords from a JSON string
+     * @param json
+     * @return Returns a list of passwords
+     */
     public static List<Password> fromJson(String json) {
 
         List<Password> passwords = new LinkedList<>();

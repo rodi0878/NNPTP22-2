@@ -6,7 +6,7 @@
 package cz.upce.fei.nnptp.entity;
 
 /**
- *
+ * Types of parameters
  * @author Roman
  */
 public enum ParameterType {

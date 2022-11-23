@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *
+ * Managing passwords saved in files
  * @author Roman
  */
 public class PasswordDatabase {
@@ -34,10 +34,19 @@ public class PasswordDatabase {
         // TODO: use JSON and CryptoFile t save
     }
     
+    /**
+     * Adds a password to a list
+     * @param password
+     */
     public void add(Password password) {
         passwords.add(password);
     }
     
+    /**
+     * Find a password by title from parameters
+     * @param title
+     * @return password
+     */
     public Password findEntryByTitle(String title) {
         for (Password password : passwords) {
             
