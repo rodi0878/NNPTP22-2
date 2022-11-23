@@ -19,36 +19,43 @@ import java.util.Objects;
  * Including Title, Expiration date, website, description
  * @author Roman
  */
-public abstract class Parameter {
-
+public abstract class Parameter<T> {
+    
+    protected T value;
+    
+    public T getValue() {
+        return value;
+    }
+    
+    public void setValue(T value) {
+        this.value = value;
+    }
+    
+    public abstract ParameterType getType();
+    
     @Override
-    public abstract String toString();
+    public int hashCode() {
+        return Objects.hash(value);
+    }
+    
+    @Override
+    public String toString() {
+        return value.toString();
+    }
+    
     @Override
     public abstract boolean equals(Object o);
-    @Override
-    public abstract int hashCode();
-    public abstract ParameterType getType();
-
-
-    public static class StandardizedParameters {
-        public static final String  TITLE = "title" ;
-        public static final String  EXPIRATION_DATETIME  = "expiration-datetime" ;
-        public  static  final String  WEBSITE = "website" ;
-        public static final String  DESCRIPTION = "description" ;
-        
-    }
     
     // TODO: add support for validation rules
     
-    public static class TextParameter extends Parameter {
-        private String value;
+    public static class TextParameter extends Parameter<String> {
+
+        private final Validator<String> validator = new Validator<>(List.of(new NonNullValidation(), new StringNotEmptyValidation()));
 
         /**
          * Sets a text parameter for password
          * @param value
          */
-        private final Validator<String> validator = new Validator<>(List.of(new NonNullValidation(), new StringNotEmptyValidation()));
-
         public TextParameter(String value) {
             if (!validator.valid(value)) {
                 throw new ValidationException("Value for TextParameter is not valid.");
@@ -59,24 +66,12 @@ public abstract class Parameter {
         public TextParameter() {
         }
 
-        /**
-         * Returns value
-         * @return
-         */
-        public String getValue() {
-            return value;
-        }
-
+        @Override
         public void setValue(String value) {
             if (!validator.valid(value)) {
                 throw new ValidationException("New value for TextParameter is not valid.");
             }
             this.value = value;
-        }
-
-        @Override
-        public String toString() {
-            return getValue();
         }
 
         /**
@@ -100,20 +95,9 @@ public abstract class Parameter {
             TextParameter that = (TextParameter) o;
             return value.equals(that.value);
         }
-
-        /**
-         * Hashing
-         * @return
-         */
-        @Override
-        public int hashCode() {
-            return Objects.hash(value);
-        }
     }
 
-    public static class DateTimeParameter extends Parameter {
-
-        private LocalDateTime value;
+    public static class DateTimeParameter extends Parameter<LocalDateTime> {
 
         private final Validator<LocalDateTime> validator = new Validator<>(List.of(new NonNullValidation()));
 
@@ -126,22 +110,13 @@ public abstract class Parameter {
             }
             this.value = value;
         }
-
-        public LocalDateTime getValue() {
-            return value;
-        }
-
-        public void setValue(LocalDateTime value) {
-            if (!validator.valid(value)) {
+      
+        @Override
+        public void setValue(LocalDateTime localDateTime) {
+            if (!validator.valid(localDateTime)) {
                 throw new ValidationException("New value for DateTimeParameter is not valid.");
             }
-            this.value = value;
-        }
-
-
-        @Override
-        public String toString() {
-            return getValue().toString();
+            this.value = localDateTime;
         }
 
         @Override
@@ -156,16 +131,9 @@ public abstract class Parameter {
             DateTimeParameter that = (DateTimeParameter) o;
             return value.equals(that.value);
         }
-
-        @Override
-        public int hashCode() {
-            return Objects.hash(value);
-        }
     }
 
-    public static class PasswordParameter extends Parameter {
-
-        private String password;
+    public static class PasswordParameter extends Parameter<String> {
 
         private final Validator<String> validator = new Validator<>(List.of(new NonNullValidation(), new StringNotEmptyValidation()));
 
@@ -176,23 +144,15 @@ public abstract class Parameter {
             if (!validator.valid(password)) {
                 throw new ValidationException("Value for PasswordParameter is not valid.");
             }
-            this.password = password;
-        }
-
-        public String getPassword() {
-            return password;
-        }
-
-        public void setPassword(String password) {
-            if (!validator.valid(password)) {
-                throw new ValidationException("New value for PasswordParameter is not valid.");
-            }
-            this.password = password;
+            this.value = password;
         }
 
         @Override
-        public String toString() {
-            return getPassword();
+        public void setValue(String password) {
+            if (!validator.valid(password)) {
+                throw new ValidationException("New value for PasswordParameter is not valid.");
+            }
+            this.value = password;
         }
 
         @Override
@@ -205,23 +165,18 @@ public abstract class Parameter {
             if (this == o) return true;
             if (o == null || getClass() != o.getClass()) return false;
             PasswordParameter that = (PasswordParameter) o;
-            return password.equals(that.password);
-        }
-
-        @Override
-        public int hashCode() {
-            return Objects.hash(password);
+            return value.equals(that.value);
         }
     }
 
-    public static Parameter getParameter(String type, String value) {
+    public static Parameter getParameter(ParameterType type, String value) {
         switch (type) {
-            case StandardizedParameters.TITLE:
-            case StandardizedParameters.WEBSITE:
-            case StandardizedParameters.DESCRIPTION:
+            case TITLE:
+            case WEBSITE:
+            case DESCRIPTION:
                 return new TextParameter(value);
-            case StandardizedParameters.EXPIRATION_DATETIME:
-                return new DateTimeParameter(LocalDateTime.parse(type));
+            case DATE:
+                return new DateTimeParameter(LocalDateTime.parse(type.toString()));
             default:
                 return null;
         }

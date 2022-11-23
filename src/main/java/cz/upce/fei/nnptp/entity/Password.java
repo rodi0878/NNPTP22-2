@@ -12,7 +12,7 @@ public class Password {
 
     private int id;
     private String password;
-    private HashMap<String, Parameter> parameters;
+    private HashMap<ParameterType, Parameter> parameters;
 
     /**
      * Creates a password with empty map of parameters
@@ -31,7 +31,7 @@ public class Password {
      * @param password
      * @param parameters
      */
-    public Password(int id, String password, HashMap<String, Parameter> parameters) {
+    public Password(int id, String password, HashMap<ParameterType, Parameter> parameters) {
         this.id = id;
         this.password = password;
         this.parameters = parameters;
@@ -57,7 +57,7 @@ public class Password {
      * Returns all parameters
      * @return parameters
      */
-    public HashMap<String, Parameter> getParameters() {
+    public HashMap<ParameterType, Parameter> getParameters() {
         return parameters;
     }
 
@@ -90,7 +90,7 @@ public class Password {
     public String toString() {
         String parametersString = "";
         int parameterIndex = 0;
-        for (Map.Entry<String, Parameter> set : parameters.entrySet()) {
+        for (Map.Entry<ParameterType, Parameter> set : parameters.entrySet()) {
             parameterIndex++;
             parametersString += "Parameter{key=" + set.getKey() + ", value=" + set.getValue() + ", type=" + set.getValue().getType() + "}";
             if (parameterIndex < parameters.size()) {

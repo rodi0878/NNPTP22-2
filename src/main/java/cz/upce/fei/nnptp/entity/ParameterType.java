@@ -10,10 +10,21 @@ package cz.upce.fei.nnptp.entity;
  * @author Roman
  */
 public enum ParameterType {
-    TITLE,
-    TEXT,
-    PASSWORD,
-    DATE
+    TITLE("title"),
+    TEXT("text"),
+    PASSWORD("password"),
+    DATE("expiration-datetime"),
+    WEBSITE("website"),
+    DESCRIPTION("description");
 
-    
+    private final String value;
+
+    private ParameterType(String value) {
+        this.value = value;
+    }
+
+    @Override
+    public String toString() {
+        return value;
+    }
 }

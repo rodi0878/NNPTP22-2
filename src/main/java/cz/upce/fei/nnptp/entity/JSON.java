@@ -42,7 +42,7 @@ public class JSON {
             json.append("\",\"parameters\": {");
             
             if (password.getParameters() != null) {
-                for (Map.Entry<String, Parameter> parameter : password.getParameters().entrySet()) {
+                for (Map.Entry<ParameterType, Parameter> parameter : password.getParameters().entrySet()) {
                     json.append(parameter.getKey());
                     json.append(": ");
                     json.append(parameter.getValue());
@@ -69,11 +69,11 @@ public class JSON {
 
             int id = Integer.parseInt(objectMatcher.group(1));
             String password = objectMatcher.group(2);
-            HashMap<String, Parameter> parameters = new HashMap<>();
+            HashMap<ParameterType, Parameter> parameters = new HashMap<>();
             Matcher parameterMatcher = PARAMETER_PATTERN.matcher(objectMatcher.group(3));
 
             while(parameterMatcher.find() && parameterMatcher.groupCount() == 2) {
-                String type = parameterMatcher.group(1);
+                ParameterType type = ParameterType.valueOf(parameterMatcher.group(1).toUpperCase());
                 Parameter parameter = Parameter.getParameter(type, parameterMatcher.group(2));
                 parameters.put(type, parameter);
             }

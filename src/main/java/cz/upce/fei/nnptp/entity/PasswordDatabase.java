@@ -31,7 +31,8 @@ public class PasswordDatabase {
     }
     
     public void save() {
-        // TODO: use JSON and CryptoFile t save
+        String contents = JSON.toJson(this.passwords);
+        CryptoFile.writeFile(this.file, this.password, contents);
     }
     
     /**
@@ -50,9 +51,8 @@ public class PasswordDatabase {
     public Password findEntryByTitle(String title) {
         for (Password password : passwords) {
             
-            if (password.hasParameter(Parameter.StandardizedParameters.TITLE)) {
-                Parameter.TextParameter titleParam;
-                titleParam = (Parameter.TextParameter)password.getParameter(Parameter.StandardizedParameters.TITLE);
+            if (password.hasParameter(ParameterType.TITLE.toString())) {
+                Parameter.TextParameter titleParam = (Parameter.TextParameter)password.getParameter(ParameterType.TITLE.toString());
                 if (titleParam.getValue().equals(title)) {
                     return password;
                 }
