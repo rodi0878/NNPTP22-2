@@ -5,7 +5,7 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- *
+ * Building passwords with parameters
  * @author Roman
  */
 public class Password {
@@ -14,26 +14,49 @@ public class Password {
     private String password;
     private HashMap<String, Parameter> parameters;
 
+    /**
+     * Creates a password with empty map of parameters
+     * @param id
+     * @param password
+     */
     public Password(int id, String password) {
         this.id = id;
         this.password = password;
         this.parameters = new HashMap<>();
     }
 
+    /**
+     * Creates a password with a map of parameters
+     * @param id
+     * @param password
+     * @param parameters
+     */
     public Password(int id, String password, HashMap<String, Parameter> parameters) {
         this.id = id;
         this.password = password;
         this.parameters = parameters;
     }
 
+    /**
+     * Returns password ID
+     * @return id
+     */
     public int getId() {
         return id;
     }
 
+    /**
+     * Returns a password
+     * @return password
+     */
     public String getPassword() {
         return password;
     }
 
+    /**
+     * Returns all parameters
+     * @return parameters
+     */
     public HashMap<String, Parameter> getParameters() {
         return parameters;
     }
@@ -59,6 +82,10 @@ public class Password {
         return Objects.hash(id, password, parameters.hashCode());
     }
 
+    /**
+     * Converting password to a string
+     * @return string
+     */
     @Override
     public String toString() {
         String parametersString = "";

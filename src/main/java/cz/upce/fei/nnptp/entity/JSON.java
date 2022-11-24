@@ -3,9 +3,11 @@ package cz.upce.fei.nnptp.entity;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.Map;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 /**
  *
@@ -13,62 +15,105 @@ import java.util.Map;
  */
 public class JSON {
 
+    /**
+     * Pattern of the password to be written into JSON
+     */
     public static final Pattern OBJECT_PATTERN = Pattern.compile("\\\"id\\\":([0-9]*),\\\"password\\\":\\\"(.+?|\\\\\")\\\",\\\"parameters\\\":\\[(.+?|\\\\\")\\]");
+
+    /**
+     * Patterns of the password parameters to be writton into JSON
+     */
     public static final Pattern PARAMETER_PATTERN = Pattern.compile("\\\"type\\\":\\\"(.+?|\\\\\")\\\",\\\"value\\\":\\\"(.+?|\\\\\")\\\"");
 
+    /**
+     * Builds a string with password and its parameters so it can be written into JSON
+     * @param passwords
+     * @return string
+     */
     public static String toJson(List<Password> passwords)  {
-        StringBuilder output = new StringBuilder("[").append("\n");;
+        StringBuilder json = new StringBuilder("[");
+        
         for (Password password : passwords) {
-            output.append("\t").append("{").append("\n");
-            output.append("\t\t").append("\"id\" : ").append(password.getId()).append(",").append("\n");
-            output.append("\t\t").append("\"password\" : \"").append(password.getPassword()).append("\",").append("\n");
-            output.append("\t\t").append("\"parameters\" : {").append("\n");
-            if(password.getParameters() != null && password.getParameters().size() > 0){
-                Map.Entry<String, Parameter> lastElementParameter = password.getParameters().entrySet().stream().reduce((one, two) -> two).get();
-                for(Map.Entry<String, Parameter> parameter : password.getParameters().entrySet()) {
-                    output.append("\t\t\t").append("\"").append(parameter.getKey()).append("\" : {").append("\n");
-                    output.append("\t\t\t\t").append("\"type\" : \"").append(parameter.getValue().getType().toString()).append("\",\n");
-                    output.append("\t\t\t\t").append("\"value\" : \"").append(parameter.getValue().toString()).append("\"").append("\n").append("\t\t\t");
-                        if(parameter.equals(lastElementParameter))
-                        {
-                            output.append("}");
-                        } else {
-                            output.append("},");
-                        }
-                        output.append("\n");
+          if (!json.toString().equals("[")) {
+                json.append(",");
+            }
+          
+            json.append("{\"id\": ");
+            json.append(password.getId());
+            json.append(",\"password\": \"").append(password.getPassword());
+            json.append("\",\"parameters\": {");
+            
+            if (password.getParameters() != null) {
+                for (Map.Entry<String, Parameter> parameter : password.getParameters().entrySet()) {
+                    json.append(parameter.getKey());
+                    json.append(": ");
+                    json.append(parameter.getValue());
+                    
                 }
             }
-            output.append("\t\t").append("}").append("\n");
-            output.append("\t").append("}");
-            if(!password.equals(passwords.get(passwords.size()-1)))
-                output.append(",");
-            output.append("\n");
+            json.append("}}");
         }
-        output.append("]");
-        
-        return output.toString();
+        json.append("]");
+        return json.toString();
     }
 
+    /**
+     * Reads passwords from a JSON string
+     * @param json
+     * @return Returns a list of passwords
+     */
     public static List<Password> fromJson(String json) {
-
         List<Password> passwords = new LinkedList<>();
-        Matcher objectMatcher = OBJECT_PATTERN.matcher(json);
-
-        while(objectMatcher.find() && objectMatcher.groupCount() == 3) {
-
-            int id = Integer.parseInt(objectMatcher.group(1));
-            String password = objectMatcher.group(2);
+        JSONArray array = new JSONArray(json);  
+        
+        for(int i = 0; i < array.length(); i++ ){
+            
             HashMap<String, Parameter> parameters = new HashMap<>();
-            Matcher parameterMatcher = PARAMETER_PATTERN.matcher(objectMatcher.group(3));
-
-            while(parameterMatcher.find() && parameterMatcher.groupCount() == 2) {
-                String type = parameterMatcher.group(1);
-                Parameter parameter = Parameter.getParameter(type, parameterMatcher.group(2));
+            JSONObject PwdObject = array.getJSONObject(i);
+            JSONObject pwdObjectList;
+            String value = "";
+            String type = "";
+            String password = "";
+            int id = 0;
+            if(PwdObject.get("parameters") instanceof JSONArray){
+                for(int j = 0; j < array.length(); j++ ){
+                    JSONArray paramArray = (JSONArray) PwdObject.get("parameters");
+                    pwdObjectList = parseArrayIntoList(paramArray, j);
+                    value = (String) pwdObjectList.get("value");
+                    type = (String) pwdObjectList.get("type");
+                    id = (int) PwdObject.get("id");
+                    password = (String) PwdObject.get("password");
+                    Parameter parameter = Parameter.getParameter(type, value);
+                    parameters.put(type, parameter);
+                }
+            }
+            if(PwdObject.get("parameters") instanceof JSONObject){
+                parameters = new HashMap<>();
+                pwdObjectList = (JSONObject) PwdObject.get("parameters");
+                type = pwdObjectList.keys().next();
+                JSONObject title = (JSONObject) pwdObjectList.get(type);
+                value = (String) title.get("value");
+                id = (int) PwdObject.get("id");
+                password = (String) PwdObject.get("password");
+                Parameter parameter = Parameter.getParameter(type, value);
                 parameters.put(type, parameter);
             }
 
             passwords.add(new Password(id, password, parameters));
+            
+
         }
+        
         return passwords;
+    
+    }
+
+
+    private static JSONObject parseArrayIntoList(JSONArray array, Integer i) {
+        if(!(array.getJSONObject(i) instanceof JSONObject)){
+            return new JSONObject();
+        }
+        
+        return array.getJSONObject(i);
     }
 }
