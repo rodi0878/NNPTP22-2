@@ -20,7 +20,12 @@ import java.util.Objects;
  */
 public class PasswordTest {
 
-    Password password;
+    Password password = new Password(1, "heslo1234", new HashMap<>() {
+        {
+            put("parameter1", new Parameter.TextParameter("value1"));
+            put("parameter2", new Parameter.TextParameter("value2"));
+        }
+    });;
 
     public PasswordTest() {
     }
@@ -35,12 +40,6 @@ public class PasswordTest {
     
     @BeforeEach
     public void setUp() {
-        password = new Password(1, "heslo1234", new HashMap<>() {
-            {
-                put("parameter1", new Parameter.TextParameter("value1"));
-                put("parameter2", new Parameter.TextParameter("value2"));
-            }
-        });
     }
     
     @AfterEach
