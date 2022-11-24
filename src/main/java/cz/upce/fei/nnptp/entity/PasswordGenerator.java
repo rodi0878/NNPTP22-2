@@ -13,7 +13,7 @@ public class PasswordGenerator {
     private static final String digits = "0123456789";
     private static final String allowedSpecialCharacters = "+?!<>*_#@%";
     private static final int defaultPasswordLength = 5;
-    private static final int maxPasswordLength = 255;
+    private static final int minPassLengthToGuaranteeCharacters = 4;
 
     public PasswordGenerator() {
     }
@@ -24,14 +24,7 @@ public class PasswordGenerator {
             System.out.println("Invalid password length, using default length");
             passwordLength = defaultPasswordLength;
         }
-        if (passwordLength < defaultPasswordLength) {
-            System.out.println("Password too short, using default length");
-            passwordLength = defaultPasswordLength;
-        }
-        if (passwordLength > maxPasswordLength) {
-            System.out.println("Password too long, using max length");
-            passwordLength = maxPasswordLength;
-        }
+
         if (!configuration.isIncludeSpecialCharactersInPassword()) {
             outputPassword = RandomStringUtils.random(passwordLength, true, configuration.isIncludeNumbersInPassword());
             if (!configuration.isIncludeCapitalLettersInPassword()) {
@@ -52,23 +45,27 @@ public class PasswordGenerator {
         }
 
         HashMap<String, Integer> typesAndCountsOfCharactersInPassword = createOrUpdateHashMap(new HashMap<String, Integer>(), outputPassword);
+        if (passwordLength < minPassLengthToGuaranteeCharacters) {
+            System.out.println("Warning! Password too short to guarantee inclusion of some characters from enabled options");
+        }else{
+            if (configuration.isIncludeNumbersInPassword() && typesAndCountsOfCharactersInPassword.get("NUMBERS") == 0) {
+                outputPassword = updatePassword(outputPassword, typesAndCountsOfCharactersInPassword, "NUMBERS");
+                typesAndCountsOfCharactersInPassword = createOrUpdateHashMap(typesAndCountsOfCharactersInPassword, outputPassword);
+            }
+            if (configuration.isIncludeCapitalLettersInPassword() && typesAndCountsOfCharactersInPassword.get("UPPERCASE") == 0) {
+                outputPassword = updatePassword(outputPassword, typesAndCountsOfCharactersInPassword, "UPPERCASE");
+                typesAndCountsOfCharactersInPassword = createOrUpdateHashMap(typesAndCountsOfCharactersInPassword, outputPassword);
+            }
+            if (configuration.isIncludeSpecialCharactersInPassword() && typesAndCountsOfCharactersInPassword.get("SPECIAL_CHARACTERS") == 0) {
+                outputPassword = updatePassword(outputPassword, typesAndCountsOfCharactersInPassword, "SPECIAL_CHARACTERS");
+                typesAndCountsOfCharactersInPassword = createOrUpdateHashMap(typesAndCountsOfCharactersInPassword, outputPassword);
+            }
+            if (configuration.isIncludeSpecialCharactersInPassword() && typesAndCountsOfCharactersInPassword.get("LOWERCASE") == 0) {
+                outputPassword = updatePassword(outputPassword, typesAndCountsOfCharactersInPassword, "LOWERCASE");
+                typesAndCountsOfCharactersInPassword = createOrUpdateHashMap(typesAndCountsOfCharactersInPassword, outputPassword);
+            }
+        }
 
-        if (configuration.isIncludeNumbersInPassword() && typesAndCountsOfCharactersInPassword.get("NUMBERS") == 0) {
-            outputPassword = updatePassword(outputPassword, typesAndCountsOfCharactersInPassword, "NUMBERS");
-            typesAndCountsOfCharactersInPassword = createOrUpdateHashMap(typesAndCountsOfCharactersInPassword, outputPassword);
-        }
-        if (configuration.isIncludeCapitalLettersInPassword() && typesAndCountsOfCharactersInPassword.get("UPPERCASE") == 0) {
-            outputPassword = updatePassword(outputPassword, typesAndCountsOfCharactersInPassword, "UPPERCASE");
-            typesAndCountsOfCharactersInPassword = createOrUpdateHashMap(typesAndCountsOfCharactersInPassword, outputPassword);
-        }
-        if (configuration.isIncludeSpecialCharactersInPassword() && typesAndCountsOfCharactersInPassword.get("SPECIAL_CHARACTERS") == 0) {
-            outputPassword = updatePassword(outputPassword, typesAndCountsOfCharactersInPassword, "SPECIAL_CHARACTERS");
-            typesAndCountsOfCharactersInPassword = createOrUpdateHashMap(typesAndCountsOfCharactersInPassword, outputPassword);
-        }
-        if (configuration.isIncludeSpecialCharactersInPassword() && typesAndCountsOfCharactersInPassword.get("LOWERCASE") == 0) {
-            outputPassword = updatePassword(outputPassword, typesAndCountsOfCharactersInPassword, "LOWERCASE");
-            typesAndCountsOfCharactersInPassword = createOrUpdateHashMap(typesAndCountsOfCharactersInPassword, outputPassword);
-        }
         return outputPassword;
     }
     private int getNumberOfOccurrencesMatchingRegEx(String input, String regex) {

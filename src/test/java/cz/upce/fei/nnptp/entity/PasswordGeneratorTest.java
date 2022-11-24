@@ -18,19 +18,4 @@ class PasswordGeneratorTest {
         assertTrue((generatedPassword.chars().anyMatch(Character::isDigit)));
         assertTrue(Pattern.compile("[+?!<>*_#@%]").matcher(generatedPassword).find());
     }
-    @Test
-    void generatePasswordWithTooShortLength() {
-        PasswordGenerator passwordGenerator = new PasswordGenerator();
-        String generatedPassword = passwordGenerator.generatePassword(2,
-                new PasswordGeneratorConfiguration(true, true, true));
-        assertTrue(generatedPassword.length() == 5);
-    }
-    @Test
-    void generatePasswordWithTooSLongLength() {
-        PasswordGenerator passwordGenerator = new PasswordGenerator();
-        String generatedPassword = passwordGenerator.generatePassword(1000,
-                new PasswordGeneratorConfiguration(true, true, true));
-        assertTrue(generatedPassword.length() == 255);
-        assertTrue(generatedPassword.chars().anyMatch(Character::isUpperCase));
-    }
 }
