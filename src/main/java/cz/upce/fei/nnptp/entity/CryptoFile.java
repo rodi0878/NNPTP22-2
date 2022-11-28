@@ -38,11 +38,13 @@ public class CryptoFile {
     private static final IvParameterSpec INITIALIZATION_VECTOR = new IvParameterSpec(new byte[16]);
     private static final String KEY_CREATION_ALGORITHM = "PBKDF2WithHmacSHA256";
     private static final String BASE_ALGORITHM = "AES";
+    private static final int iterationCount = 65536;
+    private static final int keyLength = 256;
 
     private static SecretKey getKeyFromPassword(String password) throws NoSuchAlgorithmException, InvalidKeySpecException {
 
         SecretKeyFactory factory = SecretKeyFactory.getInstance(KEY_CREATION_ALGORITHM);
-        KeySpec spec = new PBEKeySpec(password.toCharArray(), password.getBytes(), 65536, 256);
+        KeySpec spec = new PBEKeySpec(password.toCharArray(), password.getBytes(), iterationCount,keyLength );
         return new SecretKeySpec(factory.generateSecret(spec).getEncoded(), BASE_ALGORITHM);
     }
 
