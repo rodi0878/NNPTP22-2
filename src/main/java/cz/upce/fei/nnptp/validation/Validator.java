@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Validator<T> {
-    private final List<Validation<? super T>> validations = new ArrayList<>();
+    public final List<Validation<? super T>> validations = new ArrayList<>();
 
     public Validator(List<Validation<? super T>> validations) {
         this.validations.addAll(validations);
@@ -14,6 +14,8 @@ public class Validator<T> {
         this(List.of(validations));
     }
 
+    public Validator() {
+    }
 
     public boolean valid(T value) {
         return validations.stream().allMatch(tValidation -> tValidation.valid(value));
