@@ -44,11 +44,19 @@ public class JSON {
             json.append("\",\"parameters\": {");
             
             if (password.getParameters() != null) {
+                Boolean first = true;
                 for (Map.Entry<String, Parameter> parameter : password.getParameters().entrySet()) {
+                    if (first) {
+                        first = false;
+                    } else {
+                        json.append(",");
+                    }
+                    json.append("\"");
                     json.append(parameter.getKey());
-                    json.append(": ");
+                    json.append("\": \"");
                     json.append(parameter.getValue());
                     
+                    json.append("\"");
                 }
             }
             json.append("}}");
