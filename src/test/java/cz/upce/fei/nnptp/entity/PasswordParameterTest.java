@@ -35,7 +35,7 @@ public class PasswordParameterTest {
         Parameter.PasswordParameter validValue = new Parameter.PasswordParameter("ValidValue");
 
         Exception exception = assertThrows(ValidationException.class, () -> {
-            validValue.setPassword(nullString);
+            validValue.setValue(nullString);
         });
 
         assertEquals("New value for PasswordParameter is not valid.", exception.getMessage());
@@ -47,7 +47,7 @@ public class PasswordParameterTest {
         Parameter.PasswordParameter validValue = new Parameter.PasswordParameter("ValidValue");
 
         Exception exception = assertThrows(ValidationException.class, () -> {
-            validValue.setPassword(emptyString);
+            validValue.setValue(emptyString);
         });
 
         assertEquals("New value for PasswordParameter is not valid.", exception.getMessage());
