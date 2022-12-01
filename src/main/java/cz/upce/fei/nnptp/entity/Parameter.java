@@ -144,8 +144,8 @@ public abstract class Parameter<T> {
     public static class PasswordParameter extends Parameter<String> {
 
         public PasswordParameter() {
-            validator.addValidation(new NonNullValidation());
-            validator.addValidation(new StringNotEmptyValidation());
+            validator.validations.add(new NonNullValidation());
+            validator.validations.add(new StringNotEmptyValidation());
         }
 
         public PasswordParameter(String password) {
