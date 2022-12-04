@@ -8,12 +8,12 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class PasswordGenerator {
-    private static final String lowerCaseCharacters = "abcdefghijklmnopqrstuvwxyz";
-    private static final String upperCaseCharacters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    private static final String digits = "0123456789";
-    private static final String allowedSpecialCharacters = "+?!<>*_#@%";
-    private static final int defaultPasswordLength = 5;
-    private static final int minPassLengthToGuaranteeCharacters = 4;
+    private static final String LOWER_CASE_CHARACTERS = "abcdefghijklmnopqrstuvwxyz";
+    private static final String UPPER_CASE_CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    private static final String DIGITS = "0123456789";
+    private static final String ALLOWED_SPECIAL_CHARACTERS = "+?!<>*_#@%";
+    private static final int DEFAULT_PASSWORD_LENGTH = 5;
+    private static final int MIN_PASS_LENGTH_TO_GUARANTEE_CHARACTERS = 4;
 
     public PasswordGenerator() {
     }
@@ -22,7 +22,7 @@ public class PasswordGenerator {
         String outputPassword;
         if (passwordLength <= 0) {
             System.out.println("Invalid password length, using default length");
-            passwordLength = defaultPasswordLength;
+            passwordLength = DEFAULT_PASSWORD_LENGTH;
         }
 
         if (!configuration.isIncludeSpecialCharactersInPassword()) {
@@ -31,21 +31,21 @@ public class PasswordGenerator {
                 outputPassword = outputPassword.toLowerCase();
             }
         } else {
-            String mergedCharacters = allowedSpecialCharacters;
+            String mergedCharacters = ALLOWED_SPECIAL_CHARACTERS;
             if (configuration.isIncludeCapitalLettersInPassword()) {
-                mergedCharacters = mergedCharacters + lowerCaseCharacters + upperCaseCharacters;
+                mergedCharacters = mergedCharacters + LOWER_CASE_CHARACTERS + UPPER_CASE_CHARACTERS;
             } else {
-                mergedCharacters = mergedCharacters + lowerCaseCharacters;
+                mergedCharacters = mergedCharacters + LOWER_CASE_CHARACTERS;
             }
             if (configuration.isIncludeNumbersInPassword()) {
-                mergedCharacters = mergedCharacters + digits;
+                mergedCharacters = mergedCharacters + DIGITS;
             }
 
             outputPassword = RandomStringUtils.random(passwordLength, 0, mergedCharacters.length(), false, false, mergedCharacters.toCharArray());
         }
 
         HashMap<String, Integer> typesAndCountsOfCharactersInPassword = createOrUpdateHashMap(new HashMap<String, Integer>(), outputPassword);
-        if (passwordLength < minPassLengthToGuaranteeCharacters) {
+        if (passwordLength < MIN_PASS_LENGTH_TO_GUARANTEE_CHARACTERS) {
             System.out.println("Warning! Password too short to guarantee inclusion of some characters from enabled options");
         }else{
             if (configuration.isIncludeNumbersInPassword() && typesAndCountsOfCharactersInPassword.get("NUMBERS") == 0) {
@@ -88,16 +88,16 @@ public class PasswordGenerator {
         String sourceOfCharactersToUseInReplacement = "";
         switch (keyOfWhatToInsert) {
             case "NUMBERS":
-                sourceOfCharactersToUseInReplacement = digits;
+                sourceOfCharactersToUseInReplacement = DIGITS;
                 break;
             case "UPPERCASE":
-                sourceOfCharactersToUseInReplacement = upperCaseCharacters;
+                sourceOfCharactersToUseInReplacement = UPPER_CASE_CHARACTERS;
                 break;
             case "LOWERCASE":
-                sourceOfCharactersToUseInReplacement = lowerCaseCharacters;
+                sourceOfCharactersToUseInReplacement = LOWER_CASE_CHARACTERS;
                 break;
             case "SPECIAL_CHARACTERS":
-                sourceOfCharactersToUseInReplacement = allowedSpecialCharacters;
+                sourceOfCharactersToUseInReplacement = ALLOWED_SPECIAL_CHARACTERS;
                 break;
         }
         String keyOfObjectWithHighestValue = Collections.max(mapWithNumberOfOccurrences.entrySet(), HashMap.Entry.comparingByValue()).getKey();
