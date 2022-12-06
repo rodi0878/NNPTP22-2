@@ -1,11 +1,11 @@
 package cz.upce.fei.nnptp.entity;
 
-import cz.upce.fei.nnptp.entity.Parameter.*;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 /**
- *
+ * Building passwords with parameters
  * @author Roman
  */
 public class Password {
@@ -14,36 +14,59 @@ public class Password {
     private String password;
     private HashMap<String, Parameter> parameters;
 
+    /**
+     * Creates a password with empty map of parameters
+     * @param id
+     * @param password
+     */
     public Password(int id, String password) {
         this.id = id;
         this.password = password;
         this.parameters = new HashMap<>();
     }
 
+    /**
+     * Creates a password with a map of parameters
+     * @param id
+     * @param password
+     * @param parameters
+     */
     public Password(int id, String password, HashMap<String, Parameter> parameters) {
         this.id = id;
         this.password = password;
         this.parameters = parameters;
     }
 
+    /**
+     * Returns password ID
+     * @return id
+     */
     public int getId() {
         return id;
     }
 
+    /**
+     * Returns a password
+     * @return password
+     */
     public String getPassword() {
         return password;
     }
 
+    /**
+     * Returns all parameters
+     * @return parameters
+     */
     public HashMap<String, Parameter> getParameters() {
         return parameters;
     }
 
-    boolean hasParameter(String TITLE) {
-        return parameters.containsKey(TITLE);
+    boolean hasParameter(String parameterName) {
+        return parameters.containsKey(parameterName);
     }
 
-    public Parameter getParameter(String t) {
-        return parameters.get(t);
+    public Parameter getParameter(String parameterName) {
+        return parameters.get(parameterName);
     }
 
     @Override
@@ -59,36 +82,21 @@ public class Password {
         return Objects.hash(id, password, parameters.hashCode());
     }
 
+    /**
+     * Converting password to a string
+     * @return string
+     */
     @Override
     public String toString() {
-
         String parametersString = "";
         int parameterIndex = 0;
-
-        for (String type : parameters.keySet()) {
-
-            String value;
-            switch (type) {
-                case Parameter.StandardizedParameters.EXPIRATION_DATETIME:
-                    value = ((DateTimeParameter) parameters.get(type)).getValue().toString();
-                    break;
-                case Parameter.StandardizedParameters.TITLE:
-                case Parameter.StandardizedParameters.WEBSITE:
-                case Parameter.StandardizedParameters.DESCRIPTION:
-                    value = ((TextParameter) parameters.get(type)).getValue();
-                    break;
-                default:
-                    return null;
-            }
-
+        for (Map.Entry<String, Parameter> set : parameters.entrySet()) {
             parameterIndex++;
-            parametersString += "Parameter{type=" + type + ", value=" + value + "}";
-
+            parametersString += "Parameter{key=" + set.getKey() + ", value=" + set.getValue() + ", type=" + set.getValue().getType() + "}";
             if (parameterIndex < parameters.size()) {
                 parametersString += ",";
             }
         }
-
         return "Password{" + "id=" + id + ", password=" + password + ", parameters=" + parametersString + '}';
     }
 }

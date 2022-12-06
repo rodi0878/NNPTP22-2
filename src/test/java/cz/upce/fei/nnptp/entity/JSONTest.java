@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
@@ -30,15 +31,12 @@ public class JSONTest {
 
     @BeforeEach
     public void setUp() {
-
-        passwords.clear();
         passwords.add(new Password(0, "test1",
                 new HashMap<>(){
                     {
                         put("key1", new Parameter.TextParameter("val1"));
                         put("key2", new Parameter.PasswordParameter("val2"));
                         put("key3", new Parameter.DateTimeParameter(LocalDateTime.parse("2022-10-17T11:56:36.174509900")));
-
                     }
                 }
         ));
@@ -46,7 +44,7 @@ public class JSONTest {
         passwords.add(new Password(2, "test3", new HashMap<>()));
         passwords.add(new Password(3, "test4", new HashMap<>(){
             {
-                put("TEXT", new Parameter.TextParameter("val1"));
+                put("key1", new Parameter.TextParameter("val1"));
             }
         }));
     }
@@ -61,51 +59,15 @@ public class JSONTest {
      */
     @Test
     public void testToJson() {
-
-        setUp();
-        String contents = JSON.toJson(passwords);
+        List<Password> password = new ArrayList<>();
+        password.add(new Password(0, "sdfghjkl"));
+        password.add(new Password(1, "ASDSAFafasdasdasdas"));
+        password.add(new Password(2, "aaa-aaaa-"));
+        
+        String contents = JSON.toJson(password);
         System.out.println(contents);
-        String expResult = "[" +
-                "{" +
-                "\"id\":0," +
-                "\"password\":\"test1\"," +
-                "\"parameters\":[{" +
-                "\"type\":\"key1\"," +
-                "\"value\":\"val1\"" +
-                "}," +
-                "{" +
-                "\"type\":\"key2\"," +
-                "\"value\":\"val2\"" +
-                "}," +
-                "{" +
-                "\"type\":\"key3\"," +
-                "\"value\":\"2022-10-17T11:56:36.174509900\"" +
-                "}" +
-                "]" +
-                "}," +
-                "{" +
-                "\"id\":1," +
-                "\"password\":\"test2\"," +
-                "\"parameters\":[" +
-                "]" +
-                "}," +
-                "{" +
-                "\"id\":2," +
-                "\"password\":\"test3\"," +
-                "\"parameters\":[" +
-                "]" +
-                "}," +
-                "{" +
-                "\"id\":3," +
-                "\"password\":\"test4\"," +
-                "\"parameters\":[" +
-                "{" +
-                "\"type\":\"TEXT\"," +
-                "\"value\":\"val1\"" +
-                "}" +
-                "]" +
-                "}" +
-                "]";
+        String expResult = "[{\"id\": 0,\"password\": \"sdfghjkl\",\"parameters\": {}},{\"id\": 1,\"password\": \"ASDSAFafasdasdasdas\",\"parameters\": {}},{\"id\": 2,\"password\": \"aaa-aaaa-\",\"parameters\": {}}]";
+        
         assertEquals(expResult, contents);
     }
     @Test
@@ -155,10 +117,6 @@ public class JSONTest {
     @Test
     public void testBidirectionalJsonConversion() {
         List<Password> expectedResult = JSON.fromJson(JSON.toJson(passwords));
-
-        //It is not working due to types values for parameters in setUp method (key1, key2... are not Parameters types)
-        //assertArrayEquals(expectedResult.toArray(), passwords.toArray());
-
-        assertEquals(expectedResult.toArray().length, passwords.toArray().length); // Temporary workaround for passing test. It should be fixed...
+        assertArrayEquals(expectedResult.toArray(), passwords.toArray());
     }
 }

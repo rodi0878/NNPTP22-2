@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *
+ * Managing passwords saved in files
  * @author Roman
  */
 public class PasswordDatabase {
@@ -26,24 +26,29 @@ public class PasswordDatabase {
     }
     
     public void load() {
-        try {
-            String passwordInJSON = CryptoFile.readFile(file, password);
-            System.out.println(passwordInJSON);
-            passwords = new JSON().fromJson(passwordInJSON);
-        }catch (Exception e){
-            throw new RuntimeException(e.getMessage());
-        }
+        String read = CryptoFile.readFile(this.file, this.password);	
+        this.passwords = JSON.fromJson(read);
+        // TODO: throw exceptions when error
     }
     
     public void save() {
-        String passwordsContext = new JSON().toJson(passwords);
-        CryptoFile.writeFile(file, password, passwordsContext);
+        String contents = JSON.toJson(this.passwords);
+        CryptoFile.writeFile(this.file, this.password, contents);
     }
     
+    /**
+     * Adds a password to a list
+     * @param password
+     */
     public void add(Password password) {
         passwords.add(password);
     }
     
+    /**
+     * Find a password by title from parameters
+     * @param title
+     * @return password
+     */
     public Password findEntryByTitle(String title) {
         for (Password password : passwords) {
             
