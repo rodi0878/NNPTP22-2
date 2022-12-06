@@ -26,9 +26,12 @@ public class PasswordDatabase {
     }
     
     public void load() {
-        String read = CryptoFile.readFile(this.file, this.password);	
-        this.passwords = JSON.fromJson(read);
-        // TODO: throw exceptions when error
+        try{
+            String read = CryptoFile.readFile(this.file, this.password);
+            this.passwords = JSON.fromJson(read);
+        }catch (Exception e){
+            throw new RuntimeException(e.getMessage());
+        }
     }
     
     public void save() {
