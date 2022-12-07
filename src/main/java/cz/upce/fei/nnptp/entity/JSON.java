@@ -3,27 +3,18 @@ package cz.upce.fei.nnptp.entity;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.regex.Pattern;
 import java.util.Map;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+
+import cz.upce.fei.nnptp.exception.ValidationException;
 
 /**
  *
  * @author Roman
  */
 public class JSON {
-
-    /**
-     * Pattern of the password to be written into JSON
-     */
-    public static final Pattern OBJECT_PATTERN = Pattern.compile("\\\"id\\\":([0-9]*),\\\"password\\\":\\\"(.+?|\\\\\")\\\",\\\"parameters\\\":\\[(.+?|\\\\\")\\]");
-
-    /**
-     * Patterns of the password parameters to be writton into JSON
-     */
-    public static final Pattern PARAMETER_PATTERN = Pattern.compile("\\\"type\\\":\\\"(.+?|\\\\\")\\\",\\\"value\\\":\\\"(.+?|\\\\\")\\\"");
 
     /**
      * Builds a string with password and its parameters so it can be written
@@ -70,44 +61,54 @@ public class JSON {
         JSONArray array = new JSONArray(json);
 
         for (int i = 0; i < array.length(); i++) {
-
             HashMap<String, Parameter> parameters = new HashMap<>();
-            JSONObject PwdObject = array.getJSONObject(i);
-            JSONObject pwdObjectList;
-            String value = "";
+            JSONObject pwdData = array.getJSONObject(i);
+            JSONObject paramData;
+            int id = (int) pwdData.get("id");
+            String password = (String) pwdData.get("password");
+            String value = "Default";
             String type = "";
-            String password = "";
-            int id = 0;
-            if (PwdObject.get("parameters") instanceof JSONArray) {
+            if (pwdData.get("parameters") instanceof JSONArray) {
                 for (int j = 0; j < array.length(); j++) {
-                    JSONArray paramArray = (JSONArray) PwdObject.get("parameters");
-                    pwdObjectList = parseArrayIntoList(paramArray, j);
-                    value = (String) pwdObjectList.get("value");
-                    type = (String) pwdObjectList.get("type");
-                    id = (int) PwdObject.get("id");
-                    password = (String) PwdObject.get("password");
+                    JSONArray paramArray = (JSONArray) pwdData.get("parameters");
+                    paramData = parseArrayIntoList(paramArray, j);
+                    paramDataStructureHasValidStructure(paramData);
+
+                    value = (String) paramData.get("value");
+                    type = (String) paramData.get("type");
                     Parameter parameter = Parameter.getParameter(type, value);
                     parameters.put(type, parameter);
                 }
             }
-            if (PwdObject.get("parameters") instanceof JSONObject) {
+            if (pwdData.get("parameters") instanceof JSONObject) {
                 parameters = new HashMap<>();
-                pwdObjectList = (JSONObject) PwdObject.get("parameters");
-                type = pwdObjectList.keys().next();
-                JSONObject title = (JSONObject) pwdObjectList.get(type);
-                value = (String) title.get("value");
-                id = (int) PwdObject.get("id");
-                password = (String) PwdObject.get("password");
+                paramData = (JSONObject) pwdData.get("parameters");
+                paramDataStructureHasValidStructure(paramData);
+
+                value = (String) paramData.get("value");
+                type = (String) paramData.get("type");
                 Parameter parameter = Parameter.getParameter(type, value);
                 parameters.put(type, parameter);
             }
 
             passwords.add(new Password(id, password, parameters));
-
         }
 
         return passwords;
+    }
 
+    /**
+     * Throw exception when data structure of parameter is not valid.
+     *
+     *
+     */
+    private static void paramDataStructureHasValidStructure(JSONObject paramData) {
+        if (!paramData.has("value")) {
+            throw new ValidationException("Key/pair of value in parameter object does not exists");
+        }
+        if (!paramData.has("type")) {
+            throw new ValidationException("Key/pair of type in parameter object does not exists");
+        }
     }
 
     private static JSONObject parseArrayIntoList(JSONArray array, Integer i) {
