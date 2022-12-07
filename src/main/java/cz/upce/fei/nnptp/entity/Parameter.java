@@ -11,7 +11,6 @@ import cz.upce.fei.nnptp.validation.StringNotEmptyValidation;
 import cz.upce.fei.nnptp.validation.Validator;
 
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Objects;
 
 /**
@@ -22,6 +21,7 @@ import java.util.Objects;
 public abstract class Parameter<T> {
 
     protected T value;
+    protected Validator<T> validator = new Validator<>();
     
     public T getValue() {
         return value;
@@ -55,24 +55,23 @@ public abstract class Parameter<T> {
         
     }
     
-    // TODO: add support for validation rules
-    
     public static class TextParameter extends Parameter<String> {
 
-        private final Validator<String> validator = new Validator<>(List.of(new NonNullValidation(), new StringNotEmptyValidation()));
+        public TextParameter() {
+            validator.addValidation(new NonNullValidation());
+            validator.addValidation(new StringNotEmptyValidation());
+        }
 
         /**
          * Sets a text parameter for password
          * @param value
          */
         public TextParameter(String value) {
+            this();
             if (!validator.valid(value)) {
                 throw new ValidationException("Value for TextParameter is not valid.");
             }
             this.value = value;
-        }
-
-        public TextParameter() {
         }
 
         @Override
@@ -108,12 +107,12 @@ public abstract class Parameter<T> {
 
     public static class DateTimeParameter extends Parameter<LocalDateTime> {
 
-        private final Validator<LocalDateTime> validator = new Validator<>(List.of(new NonNullValidation()));
-
         public DateTimeParameter() {
+            validator.addValidation(new NonNullValidation());
         }
 
         public DateTimeParameter(LocalDateTime value) {
+            this();
             if (!validator.valid(value)) {
                 throw new ValidationException("Value for DateTimeParameter is not valid.");
             }
@@ -144,12 +143,13 @@ public abstract class Parameter<T> {
 
     public static class PasswordParameter extends Parameter<String> {
 
-        private final Validator<String> validator = new Validator<>(List.of(new NonNullValidation(), new StringNotEmptyValidation()));
-
         public PasswordParameter() {
+            validator.addValidation(new NonNullValidation());
+            validator.addValidation(new StringNotEmptyValidation());
         }
 
         public PasswordParameter(String password) {
+            this();
             if (!validator.valid(password)) {
                 throw new ValidationException("Value for PasswordParameter is not valid.");
             }
