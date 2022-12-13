@@ -44,30 +44,27 @@ public class PasswordGenerator {
             outputPassword = RandomStringUtils.random(passwordLength, 0, mergedCharacters.length(), false, false, mergedCharacters.toCharArray());
         }
 
-        HashMap<String, Integer> typesAndCountsOfCharactersInPassword = createOrUpdateHashMap(new HashMap<String, Integer>(), outputPassword);
+        HashMap<String, Integer> characterCounter = countCharacters(outputPassword);
         if (passwordLength < MIN_PASS_LENGTH_TO_GUARANTEE_CHARACTERS) {
             System.out.println("Warning! Password too short to guarantee inclusion of some characters from enabled options");
-        }else{
-            if (configuration.isIncludeNumbersInPassword() && typesAndCountsOfCharactersInPassword.get("NUMBERS") == 0) {
-                outputPassword = updatePassword(outputPassword, typesAndCountsOfCharactersInPassword, "NUMBERS");
-                typesAndCountsOfCharactersInPassword = createOrUpdateHashMap(typesAndCountsOfCharactersInPassword, outputPassword);
+        } else {
+            if (configuration.isIncludeNumbersInPassword() && characterCounter.get(DIGITS) == 0) {
+                outputPassword = updatePassword(outputPassword, characterCounter, DIGITS);
             }
-            if (configuration.isIncludeCapitalLettersInPassword() && typesAndCountsOfCharactersInPassword.get("UPPERCASE") == 0) {
-                outputPassword = updatePassword(outputPassword, typesAndCountsOfCharactersInPassword, "UPPERCASE");
-                typesAndCountsOfCharactersInPassword = createOrUpdateHashMap(typesAndCountsOfCharactersInPassword, outputPassword);
+            if (configuration.isIncludeCapitalLettersInPassword() && characterCounter.get(UPPER_CASE_CHARACTERS) == 0) {
+                outputPassword = updatePassword(outputPassword, characterCounter, UPPER_CASE_CHARACTERS);
             }
-            if (configuration.isIncludeSpecialCharactersInPassword() && typesAndCountsOfCharactersInPassword.get("SPECIAL_CHARACTERS") == 0) {
-                outputPassword = updatePassword(outputPassword, typesAndCountsOfCharactersInPassword, "SPECIAL_CHARACTERS");
-                typesAndCountsOfCharactersInPassword = createOrUpdateHashMap(typesAndCountsOfCharactersInPassword, outputPassword);
+            if (configuration.isIncludeSpecialCharactersInPassword() && characterCounter.get(ALLOWED_SPECIAL_CHARACTERS) == 0) {
+                outputPassword = updatePassword(outputPassword, characterCounter, ALLOWED_SPECIAL_CHARACTERS);
             }
-            if (configuration.isIncludeSpecialCharactersInPassword() && typesAndCountsOfCharactersInPassword.get("LOWERCASE") == 0) {
-                outputPassword = updatePassword(outputPassword, typesAndCountsOfCharactersInPassword, "LOWERCASE");
-                typesAndCountsOfCharactersInPassword = createOrUpdateHashMap(typesAndCountsOfCharactersInPassword, outputPassword);
+            if (configuration.isIncludeSpecialCharactersInPassword() && characterCounter.get(LOWER_CASE_CHARACTERS) == 0) {
+                outputPassword = updatePassword(outputPassword, characterCounter, LOWER_CASE_CHARACTERS);
             }
         }
 
         return outputPassword;
     }
+
     private int getNumberOfOccurrencesMatchingRegEx(String input, String regex) {
         Matcher matcher = Pattern.compile(regex).matcher(input);
         int count = 0;
@@ -76,50 +73,33 @@ public class PasswordGenerator {
         }
         return count;
     }
-    private HashMap<String, Integer> createOrUpdateHashMap(HashMap<String, Integer> typesAndCountsOfCharactersInPassword, String inputPassword) {
-        typesAndCountsOfCharactersInPassword.clear();
-        typesAndCountsOfCharactersInPassword.put("NUMBERS", getNumberOfOccurrencesMatchingRegEx(inputPassword, "[0-9]"));
-        typesAndCountsOfCharactersInPassword.put("UPPERCASE", getNumberOfOccurrencesMatchingRegEx(inputPassword, "[A-Z]"));
-        typesAndCountsOfCharactersInPassword.put("LOWERCASE", getNumberOfOccurrencesMatchingRegEx(inputPassword, "[a-z]"));
-        typesAndCountsOfCharactersInPassword.put("SPECIAL_CHARACTERS", getNumberOfOccurrencesMatchingRegEx(inputPassword, "[+?!<>*_#@%]"));
-        return typesAndCountsOfCharactersInPassword;
+
+    private HashMap<String, Integer> countCharacters(String input) {
+        HashMap<String, Integer> characterCounter = new HashMap<>();
+        characterCounter.put(DIGITS, getNumberOfOccurrencesMatchingRegEx(input, "[0-9]"));
+        characterCounter.put(UPPER_CASE_CHARACTERS, getNumberOfOccurrencesMatchingRegEx(input, "[A-Z]"));
+        characterCounter.put(LOWER_CASE_CHARACTERS, getNumberOfOccurrencesMatchingRegEx(input, "[a-z]"));
+        characterCounter.put(ALLOWED_SPECIAL_CHARACTERS, getNumberOfOccurrencesMatchingRegEx(input, "[+?!<>*_#@%]"));
+        return characterCounter;
     }
-    private String updatePassword(String inputPassword, HashMap<String, Integer> mapWithNumberOfOccurrences, String keyOfWhatToInsert) {
-        String sourceOfCharactersToUseInReplacement = "";
-        switch (keyOfWhatToInsert) {
-            case "NUMBERS":
-                sourceOfCharactersToUseInReplacement = DIGITS;
-                break;
-            case "UPPERCASE":
-                sourceOfCharactersToUseInReplacement = UPPER_CASE_CHARACTERS;
-                break;
-            case "LOWERCASE":
-                sourceOfCharactersToUseInReplacement = LOWER_CASE_CHARACTERS;
-                break;
-            case "SPECIAL_CHARACTERS":
-                sourceOfCharactersToUseInReplacement = ALLOWED_SPECIAL_CHARACTERS;
-                break;
-        }
-        String keyOfObjectWithHighestValue = Collections.max(mapWithNumberOfOccurrences.entrySet(), HashMap.Entry.comparingByValue()).getKey();
-        switch (keyOfObjectWithHighestValue) {
-            case "NUMBERS":
-                inputPassword = inputPassword.replaceFirst("[0-9]",
-                        Character.toString(sourceOfCharactersToUseInReplacement.charAt((int) (Math.random() * sourceOfCharactersToUseInReplacement.length()))));
-                return inputPassword;
-            case "UPPERCASE":
-                inputPassword = inputPassword.replaceFirst("[A-Z]",
-                        Character.toString(sourceOfCharactersToUseInReplacement.charAt((int) (Math.random() * sourceOfCharactersToUseInReplacement.length()))));
-                return inputPassword;
-            case "LOWERCASE":
-                inputPassword = inputPassword.replaceFirst("[a-z]",
-                        Character.toString(sourceOfCharactersToUseInReplacement.charAt((int) (Math.random() * sourceOfCharactersToUseInReplacement.length()))));
-                return inputPassword;
-            case "SPECIAL_CHARACTERS":
-                inputPassword = inputPassword.replaceFirst("[+?!<>*_#@%]",
-                        Character.toString(sourceOfCharactersToUseInReplacement.charAt((int) (Math.random() * sourceOfCharactersToUseInReplacement.length()))));
-                return inputPassword;
+
+    private String updatePassword(String password, HashMap<String, Integer> numberOfOccurrences, String whatToInsert) {
+        String whatToReplace = Collections.max(numberOfOccurrences.entrySet(), HashMap.Entry.comparingByValue()).getKey();
+
+        numberOfOccurrences.put(whatToInsert, numberOfOccurrences.get(whatToInsert) + 1);
+        numberOfOccurrences.put(whatToReplace, numberOfOccurrences.get(whatToReplace) - 1);
+
+        switch (whatToReplace) {
+            case DIGITS:
+                return password.replaceFirst("[0-9]", "" + whatToInsert.charAt((int) (Math.random() * whatToInsert.length())));
+            case UPPER_CASE_CHARACTERS:
+                return password.replaceFirst("[A-Z]", "" + whatToInsert.charAt((int) (Math.random() * whatToInsert.length())));
+            case LOWER_CASE_CHARACTERS:
+                return password.replaceFirst("[a-z]", "" + whatToInsert.charAt((int) (Math.random() * whatToInsert.length())));
+            case ALLOWED_SPECIAL_CHARACTERS:
+                return password.replaceFirst("[+?!<>*_#@%]", "" + whatToInsert.charAt((int) (Math.random() * whatToInsert.length())));
             default:
-                return inputPassword;
+                return password;
         }
     }
 }
