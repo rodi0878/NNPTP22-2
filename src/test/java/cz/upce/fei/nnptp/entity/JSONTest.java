@@ -70,6 +70,27 @@ public class JSONTest {
         
         assertEquals(expResult, contents);
     }
+    
+     @Test
+    public void testToJsonWithParameter() {
+        List<Password> password = new ArrayList<>();
+        password.add(new Password(0, "test1",
+                new HashMap<>(){
+                    {
+                        put("key1", new Parameter.TextParameter("val1"));
+                        put("key2", new Parameter.PasswordParameter("val2"));
+                        put("key3", new Parameter.DateTimeParameter(LocalDateTime.parse("2022-10-17T11:56:36.174509900")));
+                    }
+                }
+        ));
+        
+        String contents = JSON.toJson(password);
+        System.out.println(contents);
+        String expResult = "[{\"id\": 0,\"password\": \"test1\",\"parameters\": {\"key1\": \"val1\",\"key2\": \"val2\",\"key3\": \"2022-10-17T11:56:36.174509900\"}}]";
+        
+        assertEquals(expResult, contents);
+    }
+    
     @Test
     public void testFromJson() {
 
