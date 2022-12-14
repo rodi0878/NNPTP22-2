@@ -14,8 +14,22 @@ public class Validator<T> {
         this(List.of(validations));
     }
 
+    public Validator() {
+    }
 
     public boolean valid(T value) {
         return validations.stream().allMatch(tValidation -> tValidation.valid(value));
+    }
+
+    public void addValidation(Validation<? super T> validation) {
+        validations.add(validation);
+    }
+
+    public void removeValidation(Validation<? super T> validation) {
+        validations.remove(validation);
+    }
+
+    public void clearValidations() {
+        validations.clear();
     }
 }

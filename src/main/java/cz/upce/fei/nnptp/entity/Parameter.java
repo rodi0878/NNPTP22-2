@@ -11,7 +11,6 @@ import cz.upce.fei.nnptp.validation.StringNotEmptyValidation;
 import cz.upce.fei.nnptp.validation.Validator;
 
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Objects;
 
 /**
@@ -19,15 +18,33 @@ import java.util.Objects;
  * Including Title, Expiration date, website, description
  * @author Roman
  */
-public abstract class Parameter {
+public abstract class Parameter<T> {
 
+    protected T value;
+    protected Validator<T> validator = new Validator<>();
+    
+    public T getValue() {
+        return value;
+    }
+    
+    public void setValue(T value) {
+        this.value = value;
+    }
+    
+    public abstract ParameterType getType();
+    
     @Override
-    public abstract String toString();
+    public int hashCode() {
+        return Objects.hash(value);
+    }
+    
+    @Override
+    public String toString() {
+        return value.toString();
+    }
+    
     @Override
     public abstract boolean equals(Object o);
-    @Override
-    public abstract int hashCode();
-    public abstract ParameterType getType();
 
 
     public static class StandardizedParameters {
@@ -38,45 +55,31 @@ public abstract class Parameter {
         
     }
     
-    // TODO: add support for validation rules
-    
-    public static class TextParameter extends Parameter {
-        private String value;
+    public static class TextParameter extends Parameter<String> {
+
+        public TextParameter() {
+            validator.addValidation(new NonNullValidation());
+            validator.addValidation(new StringNotEmptyValidation());
+        }
 
         /**
          * Sets a text parameter for password
          * @param value
          */
-        private final Validator<String> validator = new Validator<>(List.of(new NonNullValidation(), new StringNotEmptyValidation()));
-
         public TextParameter(String value) {
+            this();
             if (!validator.valid(value)) {
                 throw new ValidationException("Value for TextParameter is not valid.");
             }
             this.value = value;
         }
 
-        public TextParameter() {
-        }
-
-        /**
-         * Returns value
-         * @return
-         */
-        public String getValue() {
-            return value;
-        }
-
+        @Override
         public void setValue(String value) {
             if (!validator.valid(value)) {
                 throw new ValidationException("New value for TextParameter is not valid.");
             }
             this.value = value;
-        }
-
-        @Override
-        public String toString() {
-            return getValue();
         }
 
         /**
@@ -100,48 +103,28 @@ public abstract class Parameter {
             TextParameter that = (TextParameter) o;
             return value.equals(that.value);
         }
-
-        /**
-         * Hashing
-         * @return
-         */
-        @Override
-        public int hashCode() {
-            return Objects.hash(value);
-        }
     }
 
-    public static class DateTimeParameter extends Parameter {
-
-        private LocalDateTime value;
-
-        private final Validator<LocalDateTime> validator = new Validator<>(List.of(new NonNullValidation()));
+    public static class DateTimeParameter extends Parameter<LocalDateTime> {
 
         public DateTimeParameter() {
+            validator.addValidation(new NonNullValidation());
         }
 
         public DateTimeParameter(LocalDateTime value) {
+            this();
             if (!validator.valid(value)) {
                 throw new ValidationException("Value for DateTimeParameter is not valid.");
             }
             this.value = value;
         }
-
-        public LocalDateTime getValue() {
-            return value;
-        }
-
-        public void setValue(LocalDateTime value) {
-            if (!validator.valid(value)) {
+      
+        @Override
+        public void setValue(LocalDateTime localDateTime) {
+            if (!validator.valid(localDateTime)) {
                 throw new ValidationException("New value for DateTimeParameter is not valid.");
             }
-            this.value = value;
-        }
-
-
-        @Override
-        public String toString() {
-            return getValue().toString();
+            this.value = localDateTime;
         }
 
         @Override
@@ -156,43 +139,29 @@ public abstract class Parameter {
             DateTimeParameter that = (DateTimeParameter) o;
             return value.equals(that.value);
         }
-
-        @Override
-        public int hashCode() {
-            return Objects.hash(value);
-        }
     }
 
-    public static class PasswordParameter extends Parameter {
-
-        private String password;
-
-        private final Validator<String> validator = new Validator<>(List.of(new NonNullValidation(), new StringNotEmptyValidation()));
+    public static class PasswordParameter extends Parameter<String> {
 
         public PasswordParameter() {
+            validator.addValidation(new NonNullValidation());
+            validator.addValidation(new StringNotEmptyValidation());
         }
 
         public PasswordParameter(String password) {
+            this();
             if (!validator.valid(password)) {
                 throw new ValidationException("Value for PasswordParameter is not valid.");
             }
-            this.password = password;
-        }
-
-        public String getPassword() {
-            return password;
-        }
-
-        public void setPassword(String password) {
-            if (!validator.valid(password)) {
-                throw new ValidationException("New value for PasswordParameter is not valid.");
-            }
-            this.password = password;
+            this.value = password;
         }
 
         @Override
-        public String toString() {
-            return getPassword();
+        public void setValue(String password) {
+            if (!validator.valid(password)) {
+                throw new ValidationException("New value for PasswordParameter is not valid.");
+            }
+            this.value = password;
         }
 
         @Override
@@ -205,12 +174,7 @@ public abstract class Parameter {
             if (this == o) return true;
             if (o == null || getClass() != o.getClass()) return false;
             PasswordParameter that = (PasswordParameter) o;
-            return password.equals(that.password);
-        }
-
-        @Override
-        public int hashCode() {
-            return Objects.hash(password);
+            return value.equals(that.value);
         }
     }
 
